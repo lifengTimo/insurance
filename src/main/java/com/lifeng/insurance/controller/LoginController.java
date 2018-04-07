@@ -27,7 +27,7 @@ public class LoginController {
 	@ResponseBody
 	public WrapResult login(Admin admin,HttpSession session){
 		if(admin==null||admin.getUserName()==null||admin.getPassword()==null){
-			return WrapResult.error(new Exception("用户名不能为空,或者密码不能为空"));
+			return WrapResult.error(new Exception("用户名不能为空,或者密码不能为空!!"));
 		}
 		admin.setPassword(Encryption.getMD5x32(admin.getPassword()));
 		if(adminService.existAdmin(admin)){
