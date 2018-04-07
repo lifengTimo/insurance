@@ -1,0 +1,58 @@
+$(function(){
+	//登录界面
+	$("#login").dialog({
+		title:'登录后台',
+		width:300,
+		height:180,
+		modal : true,
+		iconCls:'icon-login',
+		buttons:'#btn',
+		
+	});
+	//管理员账号验证
+	$('#manager').validatebox({
+		required:true,
+		missingMessage:'请输入管理员账号',
+		invalidMessage:'管理员账号不能为空',
+	});
+	//管理员账号密码
+	$('#password').validatebox({
+		required:true,
+		validType:'length[6,30]',
+		missingMessage:'请输入管理员密码',
+		invalidMessage:'管理员密码不能为空',
+	});
+	//点击登录
+	$('#btn a').click(function(){
+		if(!$('#manager').validatebox('isValid')){
+			$('#manager').focus();
+		}else if(!$('#password').validatebox('isValid')){
+			$('#password').focus();
+		}else{
+			$.ajax({
+				url:"/admin/login",
+				type:"post",
+				data:{
+					userName:$('#manager').val(),
+					password:$('#password').val(),
+				},
+				beforeSend:function(){
+					$.messager.progress({
+						text:'正在登录中....',
+					});
+				},
+				success:function(data,textStatus,jqXHR){
+					console.log(12341243);
+					$.messager.progress('close');
+					if(data.context>0){
+						location.href='/insurance/index'
+					}else{
+						$.messager.alert('登录失败！','用户名或者密码错误！','warning',function(){
+							$('#password').empty().select();
+						});
+					}
+				}
+			});
+		}
+	})
+})
