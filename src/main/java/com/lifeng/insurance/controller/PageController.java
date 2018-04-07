@@ -37,7 +37,7 @@ public class PageController {
     public String index(HttpServletResponse response,HttpServletRequest request) throws IOException {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("admin")==null){
-			//response.sendRedirect("/insurance/login");
+			response.sendRedirect("/insurance/login");
 		}
         return "index";
     }

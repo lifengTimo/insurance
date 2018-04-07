@@ -13,7 +13,10 @@
 <body>
 <body class="easyui-layout">
 	<div data-options="region:'north',title:'header',split:true,noheader:true"
-		style="height: 60px;background-color:#666"></div>
+		style="height: 60px;background-color:#666">
+			<div class="logo">后台管理</div>
+			<div class="logout">你好, <p th:if="${not #lists.isEmpty(session.admin)}" >[[${session.admin.userName}]] </p>  |   <a href="#">退出</a></div>
+		</div>
 	<div data-options="region:'south',title:'footer',split:true,noheader:true"
 		style="height: 35px;line-height: 30px;text-align: center">
 		 @2018  李丰 .Powered by SpringBoot and EasyUI
@@ -24,7 +27,7 @@
 		style="overflow:hidden;">
 			<div id="tabs">
 				<div title="起始页" iconCls="icon-house" style="padding:0 10px;display: block;">
-					<p>欢迎来到后台管理系统！1</p>
+					<p>欢迎来到后台管理系统!</p>
 				</div>
 			</div>
 		</div>
