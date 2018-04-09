@@ -1,7 +1,12 @@
 package com.lifeng.insurance.controller;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +16,7 @@ import com.lifeng.insurance.service.AdminService;
 import com.lifeng.insurance.util.Encryption;
 
 
-@RestController
+@Controller
 @RequestMapping("admin")
 public class LoginController {
 	
@@ -37,6 +42,12 @@ public class LoginController {
 			return WrapResult.ok("0");
 		}
 		
+	}
+	
+	@RequestMapping("/logout")
+	public void logout(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		request.getSession().invalidate();
+		response.sendRedirect("/insurance/login");
 	}
 
 }

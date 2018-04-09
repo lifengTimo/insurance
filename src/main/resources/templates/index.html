@@ -15,18 +15,23 @@
 	<div data-options="region:'north',title:'header',split:true,noheader:true"
 		style="height: 60px;background-color:#666">
 			<div class="logo">后台管理</div>
-			<div class="logout">你好, <p th:if="${not #lists.isEmpty(session.admin)}" >[[${session.admin.userName}]] </p>  |   <a href="#">退出</a></div>
+			<div class="logout">你好, <p th:if="${not #lists.isEmpty(session.admin)}" >[[${session.admin.userName}]] </p>  |   <a href="/admin/logout">退出</a></div>
 		</div>
 	<div data-options="region:'south',title:'footer',split:true,noheader:true"
 		style="height: 35px;line-height: 30px;text-align: center">
 		 @2018  李丰 .Powered by SpringBoot and EasyUI
 		</div>
-	<div data-options="region:'west',title:'导航',split:true"
-		style="width: 240px;padding: 10px"></div>
+	<div data-options="region:'west',title:'导航',split:true,iconCls:'icon-navigation'",
+		style="width: 240px;padding: 10px">
+			<ul id="nav">
+			
+			</ul>
+		
+		</div>
 	<div data-options="region:'center'"
 		style="overflow:hidden;">
 			<div id="tabs">
-				<div title="起始页" iconCls="icon-house" style="padding:0 10px;display: block;">
+				<div title="起始页" iconCls="icon-home" style="padding:0 10px;display: block;">
 					<p>欢迎来到后台管理系统!</p>
 				</div>
 			</div>

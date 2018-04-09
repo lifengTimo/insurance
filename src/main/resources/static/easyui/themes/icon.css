@@ -67,10 +67,32 @@
 .icon-more{
 	background:url('icons/more.png') no-repeat center center;
 }
+.icon-navigation{
+	background:url('icons/navigation.ico') no-repeat center center;
+}
 
+.icon-home{
+	background:url('icons/blue_home.ico') no-repeat center center;
+}
 .icon-login{
 	background:url('icons/login.png') no-repeat center center;
 }
+
+.icon-system{
+	background:url('icons/system.ico') no-repeat center center;
+}
+
+.icon-manager{
+	background:url('icons/manager.ico') no-repeat center center;
+}
+.icon-client{
+	background:url('icons/client.ico') no-repeat center center;
+}
+.icon-user{
+	background:url('icons/user.ico') no-repeat center center;
+}
+
+
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat center center;
 }
