@@ -91,7 +91,21 @@
 .icon-user{
 	background:url('icons/user.ico') no-repeat center center;
 }
-
+.icon-add{
+	background:url('icons/add.ico') no-repeat center center;
+}
+.icon-delete{
+	background:url('icons/delete.ico') no-repeat center center;
+}
+.icon-modify{
+	 background:url('icons/modify.ico') no-repeat center center;
+ }
+.icon-save{
+	background:url('icons/save.ico') no-repeat center center;
+}
+.icon-cancel{
+	background:url('icons/cancel.ico') no-repeat center center;
+}
 
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat center center;

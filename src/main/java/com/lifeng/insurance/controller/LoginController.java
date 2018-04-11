@@ -1,19 +1,25 @@
 package com.lifeng.insurance.controller;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.lifeng.insurance.model.Admin;
+import com.lifeng.insurance.model.Page;
+import com.lifeng.insurance.model.PageReturn;
 import com.lifeng.insurance.model.WrapResult;
 import com.lifeng.insurance.service.AdminService;
 import com.lifeng.insurance.util.Encryption;
+import com.lifeng.insurance.util.QueryTool;
 
 
 @Controller
@@ -43,11 +49,24 @@ public class LoginController {
 		}
 		
 	}
-	
+	/**
+	 * 取消登记
+	 * @param response
+	 * @param request
+	 * @throws IOException
+	 */
 	@RequestMapping("/logout")
 	public void logout(HttpServletResponse response,HttpServletRequest request) throws IOException{
 		request.getSession().invalidate();
 		response.sendRedirect("/insurance/login");
 	}
-
+	
+	@RequestMapping("/getAllAdmin")
+	@ResponseBody
+	public PageReturn getAllAdmin(Page page){
+		PageRequest pageRequest=null;
+		pageRequest=QueryTool.buildPageRequest(page.getPage()-1, page.getRows());
+		return adminService.getAllAmin(pageRequest);
+		
+	}
 }

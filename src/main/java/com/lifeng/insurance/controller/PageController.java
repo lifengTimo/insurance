@@ -41,6 +41,14 @@ public class PageController {
 		}
         return "index";
     }
+	@RequestMapping("/manager")
+    public String manager(HttpServletResponse response,HttpServletRequest request) throws IOException {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("admin")==null){
+			response.sendRedirect("/insurance/login");
+		}
+        return "manager";
+    }
 	
 }
 

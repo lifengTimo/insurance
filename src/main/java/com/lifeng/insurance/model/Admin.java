@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+
+import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 用户管理员
  * @author PA
@@ -41,6 +43,7 @@ public class Admin  implements Serializable{
 	
 	@Column(name="create_time",columnDefinition="timestamp COMMENT '创建时间'",insertable=false, updatable=false)
 	@Generated(GenerationTime.INSERT)
+	@JSONField(format="yyyy-MM-dd hh:mm:ss")
 	private  Timestamp createTime;
 	
 	
