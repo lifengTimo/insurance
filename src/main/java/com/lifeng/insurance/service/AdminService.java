@@ -17,5 +17,9 @@ public interface AdminService {
 	boolean existAdmin(Admin admin);
 	
 	PageReturn getAllAmin(Pageable pageable);
+	
+	boolean addAmin(Admin admin);
+	
+	Admin getAdminById(int id);
 
 }

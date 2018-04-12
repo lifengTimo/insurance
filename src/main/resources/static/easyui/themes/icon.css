@@ -106,7 +106,9 @@
 .icon-cancel{
 	background:url('icons/cancel.ico') no-repeat center center;
 }
-
+.icon-admin-add{
+	background:url('icons/admin-add.png') no-repeat center center;
+}
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat center center;
 }

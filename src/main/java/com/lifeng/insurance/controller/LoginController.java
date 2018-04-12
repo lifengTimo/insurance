@@ -60,13 +60,36 @@ public class LoginController {
 		request.getSession().invalidate();
 		response.sendRedirect("/insurance/login");
 	}
-	
+	/**
+	 * 根据分页条件获取所有的管理员信息
+	 * @param page
+	 * @return
+	 */
 	@RequestMapping("/getAllAdmin")
 	@ResponseBody
 	public PageReturn getAllAdmin(Page page){
 		PageRequest pageRequest=null;
 		pageRequest=QueryTool.buildPageRequest(page.getPage()-1, page.getRows());
 		return adminService.getAllAmin(pageRequest);
-		
+	}
+	/**
+	 * 插入管理员
+	 * @param admin
+	 * @return
+	 */
+	@RequestMapping("/insertAdmin")
+	@ResponseBody
+	public boolean insertAdmin(Admin admin){
+		return adminService.addAmin(admin);
+	}
+	/**
+	 * 通过编号获取管理员信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/getAdmin")
+	@ResponseBody
+	public Admin insertAdmin(Integer id){
+		return adminService.getAdminById(id);
 	}
 }

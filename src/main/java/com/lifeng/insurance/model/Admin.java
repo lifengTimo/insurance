@@ -35,7 +35,7 @@ public class Admin  implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="user_name",columnDefinition="varchar(100) COMMENT '用户姓名'")
+	@Column(name="user_name",columnDefinition="varchar(100) COMMENT '用户姓名'",unique=true)
 	private String userName;
 	
 	@Column(name="password",columnDefinition="varchar(100) COMMENT '用户密码'")
@@ -46,6 +46,8 @@ public class Admin  implements Serializable{
 	@JSONField(format="yyyy-MM-dd hh:mm:ss")
 	private  Timestamp createTime;
 	
+	@Column(name="auth",columnDefinition="varchar(100) COMMENT '用户权限'")
+	private String auth;
 	
 	public Integer getId() {
 		return id;
@@ -74,5 +76,16 @@ public class Admin  implements Serializable{
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
-
+	public String getAuth() {
+		return auth;
+	}
+	public void setAuth(String auth) {
+		this.auth = auth;
+	}
+	@Override
+	public String toString() {
+		return "Admin [id=" + id + ", userName=" + userName + ", password=" + password + ", createTime=" + createTime
+				+ ", auth=" + auth + "]";
+	}
+	
 }

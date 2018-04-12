@@ -25,7 +25,7 @@ public class TestJpa {
 	@Autowired
 	private NavService navService;
 	
-	@Test
+	//@Test
 	public void TestExample(){
 		Admin admin=new Admin();
 		admin.setId(1002);
@@ -33,9 +33,23 @@ public class TestJpa {
 		System.out.println("测试结果:"+ adminService.existAdmin(admin));
 	}
 	
-	@Test
+	//@Test
 	public void TestExample11(){
 		List<Nav> list = navService.selectAllNav("0");
 		System.out.println(list);
+	}
+	
+	//@Test
+	public void TestAminAdd() {
+		Admin admin=new Admin();
+		admin.setUserName("admin23421");
+		admin.setPassword("1231243");
+		System.out.println("用户增加： "+adminService.addAmin(admin));
+	}
+	
+	@Test
+	public void TestAminAget() {
+		System.out.println("134132");
+		System.out.println("用户查找： "+adminService.getAdminById(1001));
 	}
 }

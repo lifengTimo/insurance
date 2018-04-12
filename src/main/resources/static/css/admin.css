@@ -17,6 +17,10 @@
 .logout p{
     display: inline;
 }
+.dialog-button{
+    text-align: center;
+}
+
 a{
     color: #ffffff;
     text-decoration: none;
