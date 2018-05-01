@@ -52,4 +52,18 @@ public class TestJpa {
 		System.out.println("134132");
 		System.out.println("用户查找： "+adminService.getAdminById(1001));
 	}
+	@Test
+	public void TestAminUpdate() {
+		Admin admin=new Admin();
+		admin.setId(1002);
+		admin.setPassword("12341234");
+		admin.setUserName("testAdmin1232");
+		System.out.println("结果为:"+adminService.updateAdmin(admin));
+	}
+	@Test
+	public void TestAdminDetele() {
+		String ids="1026,1025";
+		int deleteAmins = adminService.deleteAmins(ids);
+		System.out.println("受影响的行数："+deleteAmins);
+	}
 }

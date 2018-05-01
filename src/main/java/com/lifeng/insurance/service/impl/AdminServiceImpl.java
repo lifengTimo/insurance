@@ -1,7 +1,12 @@
 package com.lifeng.insurance.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -24,6 +29,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private AdminRepository adminRepository;
+
 	@Override
 	public boolean existAdmin(Admin admin) {
 		Admin result= adminRepository.exitsAdmin(admin.getUserName(), admin.getPassword());
@@ -56,6 +62,34 @@ public class AdminServiceImpl implements AdminService {
 	public Admin getAdminById(int id) {
 		Optional<Admin> result = adminRepository.findById(id);
 		return result.get();
+	}
+	@Override
+	public int updateAdmin(Admin admin) {
+		Admin oldAdmin = adminRepository.findById(admin.getId()).get();
+		if(oldAdmin==null) {
+			return 0;
+		}
+		if(admin.getPassword()!=null) {
+			if(!admin.getPassword().equals("")) {
+				 admin.setPassword(Encryption.getMD5x32(admin.getPassword()));
+			}else {
+				admin.setPassword(oldAdmin.getPassword());
+			}
+			
+		}else {
+			admin.setPassword(oldAdmin.getPassword());
+		}
+		adminRepository.saveAndFlush(admin);
+		return 1;
+		
+		
+	}
+	@Override
+	public int deleteAmins(String ids) {
+		String[] split = ids.split(",");
+		List<String> list=Arrays.asList(split);
+		int result = adminRepository.deleteIds(list);
+		return result;
 	}
 
 }

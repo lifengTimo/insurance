@@ -92,4 +92,25 @@ public class LoginController {
 	public Admin insertAdmin(Integer id){
 		return adminService.getAdminById(id);
 	}
+	/**
+	 * 更新用户信息
+	 * @param admin
+	 * @return
+	 */
+	@RequestMapping("/updateAdmin")
+	@ResponseBody
+	public int updateAdmin(Admin admin) {
+		return adminService.updateAdmin(admin);
+	}
+	
+	/**
+	 * 更新用户信息
+	 * @param admin
+	 * @return
+	 */
+	@RequestMapping("/delAdmin")
+	@ResponseBody
+	public int delAdmin(String ids) {
+		return adminService.deleteAmins(ids);
+	}
 }

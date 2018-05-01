@@ -45,33 +45,33 @@ $(function(){
             iconCls:'icon-add',
             handler:function () {
                 if($('#manager_add').form('validate')){
-                    $.ajax({
-                        url:'/admin/insertAdmin',
-                        type:'post',
-                        data:{
-                            userName:$('input[name="manager"]').val(),
-                            password:$('input[name="password"]').val(),
-                            auth:$('#auth').combotree('getText'),
-                        },
-                         beforeSend:function () {
-                             $.messager.progress({
-                                 text:'正在新增中。。。',
-                             });
-                         },
-                         success : function (data, response, status) {
-                             $.messager.progress('close');
-                             if(data>0){
-                                 $.messager.show({
-                                     title:'提示',
-                                     msg:'新增管理成功',
-                                 });
-                                 $('#manager_add').dialog('close').form('reset');
-                                 $('#manager').datagrid('reload');
-                             }else{
-                                 $.messager.alert('新增失败','未知错误导致！','warning');
-                             }
-                         }
-                    });
+                        $.ajax({
+                            url:'/admin/insertAdmin',
+                            type:'post',
+                            data:{
+                                userName:$('input[name="manager"]').val(),
+                                password:$('input[name="password"]').val(),
+                                auth:$('#auth').combotree('getText'),
+                            },
+                            beforeSend:function () {
+                                $.messager.progress({
+                                    text:'正在新增中。。。',
+                                });
+                            },
+                            success : function (data, response, status) {
+                                $.messager.progress('close');
+                                if(data>0){
+                                    $.messager.show({
+                                        title:'提示',
+                                        msg:'新增管理成功',
+                                    });
+                                    $('#manager_add').dialog('close').form('reset');
+                                    $('#manager').datagrid('reload');
+                                }else{
+                                    $.messager.alert('新增失败','未知错误导致！','warning');
+                                }
+                            }
+                        });
                 }
             },
         },{
@@ -92,9 +92,38 @@ $(function(){
         closed:true,
         buttons:[{
             text:'提交',
-            iconCls:'icon-add',
+            iconCls:'icon-edit',
             handler:function () {
-
+                if($('#manager_edit').form('validate')){
+                    $.ajax({
+                        url:'/admin/updateAdmin',
+                        type:'post',
+                        data:{
+                            id:$('#id').val(),
+                            password:$('input[name="password_edit"]').val(),
+                            userName:$('input[name="manager_edit"]').val(),
+                            auth:$('#auth_edit').combotree('getText'),
+                        },
+                        beforeSend:function () {
+                            $.messager.progress({
+                                text:'正在修改中。。。',
+                            });
+                        },
+                        success : function (data, response, status) {
+                            $.messager.progress('close');
+                            if(data>0){
+                                $.messager.show({
+                                    title:'提示',
+                                    msg:'修改用户信息成功',
+                                });
+                                $('#manager_edit').dialog('close').form('reset');
+                                $('#manager').datagrid('reload');
+                            }else{
+                                $.messager.alert('修改失败','未知错误导致！','warning');
+                            }
+                        }
+                    });
+                }
             },
         },{
             text:'取消',
@@ -120,7 +149,12 @@ $(function(){
         missingMessage:'请输入管理密码',
         invalidaMessage:'管理密码在6-30位',
     });
-
+    //修改管理密码
+    $('input[name="password_edit"]').validatebox({
+        validType:'length[6,30]',
+        missingMessage:'请输入管理密码',
+        invalidaMessage:'管理密码在6-30位',
+    });
     //分配权限
     $('#auth').combotree({
         url:'/nav/getAll',
@@ -146,6 +180,52 @@ $(function(){
             $('#manager_add').dialog('open');
             $('input[name="manager"]').focus();
         },
+        //取消所有选定
+        redo:function () {
+            $('#manager').datagrid('unselectAll');
+        },
+        //当前页面刷新
+        reload:function () {
+          $('#manager').datagrid('reload');
+        },
+        remove:function () {
+            var rows=$('#manager').datagrid('getSelections');
+            if(rows.length>0){
+                $.messager.confirm('确定操作','你正要删除所选的记录吗？',function (flag) {
+                    if(flag){
+                        var ids=[];
+                        for(var i=0;i<rows.length;i++){
+                            ids.push(rows[i].id);
+                        }
+                        $.ajax({
+                            type:'POST',
+                            url:'/admin/delAdmin',
+                            data:{
+                                ids:ids.join(','),
+                            },
+                            beforeSend:function () {
+                                $('#manager').datagrid('loading');
+                            },
+                            success:function (data) {
+                                if(data){
+                                    $('#manager').datagrid('loaded');
+                                    $('#manager').datagrid('reload');
+                                    $('#manager').datagrid('unselectAll');
+                                    $.messager.show({
+                                        title:'提示',
+                                        msg:data+'个用户被删除成功！',
+                                    });
+                                }
+                            }
+                        })
+                    }
+                });
+
+            }
+            else{
+                $.messager.alert('警告操作','删除记录至少一条数据！','warning');
+            }
+        },
         edit:function () {
             var rows=$('#manager').datagrid('getSelections');
             if(rows.length>1){
@@ -165,6 +245,7 @@ $(function(){
                     success : function (data, response, status) {
                         $.messager.progress('close');
                         if(data){
+
                            $('#manager_edit').form('load',{
                                id:data.id,
                                manager_edit:data.userName,

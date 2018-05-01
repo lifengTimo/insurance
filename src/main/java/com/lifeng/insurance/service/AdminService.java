@@ -21,5 +21,17 @@ public interface AdminService {
 	boolean addAmin(Admin admin);
 	
 	Admin getAdminById(int id);
+	/**
+	 * 更新admin
+	 * @param admin
+	 * @return
+	 */
+	int updateAdmin(Admin admin);
+	/**
+	 * 批量删除
+	 * @param ids
+	 * @return
+	 */
+	int deleteAmins(String ids);
 
 }
