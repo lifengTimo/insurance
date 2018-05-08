@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -53,6 +54,7 @@ public class SexLimit implements Serializable {
 	/**
 	 * 提示信息  名称
 	 */
+	@Transient 
 	private String promptMessageName;
 	
 	
