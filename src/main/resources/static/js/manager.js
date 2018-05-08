@@ -25,6 +25,7 @@ $(function(){
                 title:'管理员姓名',
                 width:100,
             },
+
             {
                 field:'createTime',
                 title:'创建时间',

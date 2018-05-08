@@ -39,11 +39,12 @@ public class TestJpa {
 		System.out.println(list);
 	}
 	
-	//@Test
+	@Test
 	public void TestAminAdd() {
 		Admin admin=new Admin();
-		admin.setUserName("admin23421");
-		admin.setPassword("1231243");
+		admin.setUserName("admin");
+		admin.setPassword("123456");
+		admin.setId(1001);
 		System.out.println("用户增加： "+adminService.addAmin(admin));
 	}
 	
