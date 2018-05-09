@@ -7,11 +7,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.lifeng.insurance.dao.AdminRepository;
+import com.lifeng.insurance.dao.DrugRepository;
+import com.lifeng.insurance.dao.PublicDictRepository;
 import com.lifeng.insurance.model.Admin;
 import com.lifeng.insurance.model.Nav;
+import com.lifeng.insurance.model.PublicDict;
 import com.lifeng.insurance.service.AdminService;
 import com.lifeng.insurance.service.NavService;
 
@@ -24,6 +29,13 @@ public class TestJpa {
 	
 	@Autowired
 	private NavService navService;
+	
+	@Autowired
+	private DrugRepository drugDao;
+	
+	
+	@Autowired
+	private PublicDictRepository dictDao;
 	
 	//@Test
 	public void TestExample(){
@@ -66,5 +78,18 @@ public class TestJpa {
 		String ids="1026,1025";
 		int deleteAmins = adminService.deleteAmins(ids);
 		System.out.println("受影响的行数："+deleteAmins);
+	}
+	
+	@Test
+	public void getAllDrug() {
+		System.out.println(drugDao.getAll("固"));
+	}
+	
+	@Test
+	public void getDict() {
+		PublicDict dict=new PublicDict();
+		dict.setDictCode("SEX_DICT");
+		Example<PublicDict> ex=Example.of(dict);
+		System.out.println(dictDao.findAll(ex));
 	}
 }
