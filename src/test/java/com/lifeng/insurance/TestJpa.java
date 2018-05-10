@@ -9,15 +9,18 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.lifeng.insurance.dao.AdminRepository;
+import com.lifeng.insurance.dao.DrugBodyLimitRepository;
 import com.lifeng.insurance.dao.DrugRepository;
 import com.lifeng.insurance.dao.PublicDictRepository;
 import com.lifeng.insurance.model.Admin;
 import com.lifeng.insurance.model.Nav;
 import com.lifeng.insurance.model.PublicDict;
 import com.lifeng.insurance.service.AdminService;
+import com.lifeng.insurance.service.DrugBodyLimitService;
 import com.lifeng.insurance.service.NavService;
 
 @RunWith(SpringRunner.class)
@@ -37,6 +40,12 @@ public class TestJpa {
 	@Autowired
 	private PublicDictRepository dictDao;
 	
+	@Autowired
+	private DrugBodyLimitRepository bodyDao;
+	
+	
+	@Autowired
+	private DrugBodyLimitService bodyService;
 	//@Test
 	public void TestExample(){
 		Admin admin=new Admin();
@@ -51,7 +60,7 @@ public class TestJpa {
 		System.out.println(list);
 	}
 	
-	@Test
+	/*@Test
 	public void TestAminAdd() {
 		Admin admin=new Admin();
 		admin.setUserName("admin");
@@ -92,4 +101,11 @@ public class TestJpa {
 		Example<PublicDict> ex=Example.of(dict);
 		System.out.println(dictDao.findAll(ex));
 	}
+	*/
+	/*@Test
+	public void getAllBody() {
+		System.out.println(bodyService.getAll(new PageRequest(1, 200)).getRows());
+	}*/
 }
+
+

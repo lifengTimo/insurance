@@ -1,0 +1,31 @@
+<table id="drugBodyTable">
+</table>
+<div id="drugBody_tool" style="padding: 5px;">
+    <div style="margin-bottom: 5px;">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="drugBody_tool.add();">添加</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="drugBody_tool.remove();">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-modify" plain="true" onclick="drugBody_tool.edit()">修改</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="drugBody_tool.reload()">刷新</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="drugBody_tool.redo()">取消选择</a>
+    </div>
+</div>
+<form id="drugBody_add" style="margin: 0;padding: 5px 0 0 25px;color: #333;">
+    <p>药品编码：<input id="bodyLimitDrugCode" type="text" name="drugCode" class="textbox" style="width: 200px;"></p>
+  <!--  <p>性别限制：<input  id="sexLimitInput" class="textbox" name="sexLimit" style="width: 205px;"></p> -->
+    <p>年龄限制： <select  id="bodyLimitInput">
+        <option value="004"> 限制儿童</option>
+        <option value="010"> 限制成年</option>
+        <option value="009">限制老年</option>
+    </select></p>
+</form>
+<form id="drugBody_edit" style="margin: 0;padding: 5px 0 0 25px;color: #333;">
+    <input type="hidden" id="id" name="id" class="textbox" style="width: 200px;">
+    <p>药品编码：<input id="bodyLimitDrugCodeEdit" type="text" name="drugCode" class="textbox" style="width: 200px;" disabled="disabled"></p>
+    <!--  <p>性别限制：<input  id="sexLimitInput" class="textbox" name="sexLimit" style="width: 205px;"></p> -->
+    <p>年龄限制： <select  id="bodyLimitInputEdit" name="bodyLimit">
+        <option value="004"> 限制儿童</option>
+        <option value="010"> 限制成年</option>
+        <option value="009">限制老年</option>
+    </select></p>
+</form>
+<script type="type/javascript" src="/js/drugBody.js"></script>
