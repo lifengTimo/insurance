@@ -1,7 +1,7 @@
 //药品限制--> 性别限制
 $(function(){
-	$('#drugBodyTable').datagrid({
-        url:'/drugBody/getAll',
+	$('#drugHospitalTable').datagrid({
+        url:'/drugHospital/getAll',
         fit:true,
         fitColumns:true,
         striped:true,
@@ -13,7 +13,7 @@ $(function(){
         pageNumber:1,
         sortName:'createTime',
         sortOder:'desc',
-        toolbar:'#drugBody_tool',
+        toolbar:'#drugHospital_tool',
         columns:[[
             {
                 field:'id',
@@ -22,19 +22,40 @@ $(function(){
                 checkbox:true,
             },
             {
-                field:'drugCode',
+                field:'drug',
                 title:'药品编码',
                 width:100,
+                formatter: function(value,row,index){
+                    if (row.drug){
+                        return row.drug.drugCode;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
-                field:'drugName',
+                field:'drug.drugName',
                 title:'药品名称',
                 width:100,
+                formatter: function(value,row,index){
+                    if (row.drug){
+                        return row.drug.drugName;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
-                field:'bodyLimitName',
+                field:'hospitalGrade',
                 title:'医院等级限制',
                 width:50,
+                formatter: function(value,row,index){
+                    if (row.hospitalGrade){
+                        return row.hospitalGrade.valueName;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
                 field:'createTime',
@@ -44,8 +65,10 @@ $(function(){
 
         ]]
     });
+
+
 	//操作员添加
-    $('#drugBody_add').dialog({
+    $('#drugHospital_add').dialog({
         width: 350,
         title: '新增管理',
         iconCls:'icon-admin-add',
@@ -56,17 +79,22 @@ $(function(){
             iconCls:'icon-add',
             handler:function () {
                 console.log("开始");
-                var g =  $('#bodyLimitDrugCode').combogrid('grid');
+                var g =  $('#HospitalLimitDrugCode').combogrid('grid');
                 var r = g.datagrid('getSelected');
-                if($('#drugBody_add').form('validate')){
+                var  json={
+                    drug:r,
+                    hospitalGrade:{
+                        id:$('#HospitalLimitInput option:selected') .val(),
+                        valueName:$('#HospitalLimitInput option:selected') .text(),
+                        dictCode:"HOSPITAL_GRADE"}
+                };
+                if($('#drugHospital_add').form('validate')){
                     $.ajax({
-                        url:'/drugBody/insert',
+                        url:'/drugHospital/insert',
                         type:'post',
-                        data:{
-                           drugCode:r.drugCode,
-                            drugName:r.drugName,
-                            bodyLimit:$('#bodyLimitInput option:selected') .val(),
-                        },
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType : "json",
+                        data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
                         beforeSend:function () {
                             $.messager.progress({
                                 text:'正在新增中。。。',
@@ -79,8 +107,8 @@ $(function(){
                                     title:'提示',
                                     msg:'新增成功',
                                 });
-                                $('#drugBody_add').dialog('close').form('reset');
-                                $('#drugBodyTable').datagrid('reload');
+                                $('#drugHospital_add').dialog('close').form('reset');
+                                $('#drugHospitalTable').datagrid('reload');
                             }else{
                                 $.messager.alert('新增失败','未知错误导致！','warning');
                             }
@@ -92,13 +120,13 @@ $(function(){
             text:'取消',
             iconCls:'icon-redo',
             handler:function () {
-                $('#drugBody_add').form('reset');
-                $('#drugBody_add').dialog('close').close();
+                $('#drugHospital_add').form('reset');
+                $('#drugHospital_add').dialog('close').close();
             },
         }]
     });
     //操作员修改
-    $('#drugBody_edit').dialog({
+    $('#drugHospital_edit').dialog({
         width: 350,
         title: '修改管理',
         iconCls:'icon-admin-add',
@@ -109,14 +137,22 @@ $(function(){
             iconCls:'icon-edit',
             handler:function () {
                 if($('#manager_edit').form('validate')){
-                    $.ajax({
-                        url:'/drugBody/update',
-                        type:'put',
-                        data:{
-                            id:$('#id').val(),
-                            drugCode:$('#bodyLimitDrugCodeEdit').val(),
-                            bodyLimit:$('#bodyLimitInputEdit option:selected') .val(),
+                    var  json={
+                        id:$('#id').val(),
+                        drug:{
+                            id:$('#drugId').val(),
                         },
+                        hospitalGrade:{
+                            id:$('#HospitalLimitInputEdit option:selected') .val(),
+                        }
+                    };
+
+                    $.ajax({
+                        url:'/drugHospital/insert',
+                        type:'put',
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType : "json",
+                        data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
                         beforeSend:function () {
                             $.messager.progress({
                                 text:'正在修改中。。。',
@@ -129,8 +165,8 @@ $(function(){
                                     title:'提示',
                                     msg:'修改用户信息成功',
                                 });
-                                $('#drugBody_edit').dialog('close').form('reset');
-                                $('#drugBodyTable').datagrid('reload');
+                                $('#drugHospital_edit').dialog('close').form('reset');
+                                $('#drugHospitalTable').datagrid('reload');
                             }else{
                                 $.messager.alert('修改失败','未知错误导致！','warning');
                             }
@@ -142,8 +178,8 @@ $(function(){
             text:'取消',
             iconCls:'icon-edit',
             handler:function () {
-                $('#manager_edit').form('reset');
-                $('#manager_edit').dialog('close').close();
+                $('#drugHospital_edit').form('reset');
+                $('#drugHospital_edit').dialog('close').close();
             },
         }]
     });
@@ -168,21 +204,21 @@ $(function(){
         ]]
     });
     //管理员工具
-    drugBody_tool={
+    drugHospital_tool={
         add:function () {
-            $('#drugBody_add').dialog('open');
+            $('#drugHospital_add').dialog('open');
             $('input[name="drugCode"]').focus();
         },
         //取消所有选定
         redo:function () {
-            $('#drugBodyTable').datagrid('unselectAll');
+            $('#drugHospitalTable').datagrid('unselectAll');
         },
         //当前页面刷新
         reload:function () {
-          $('#drugBodyTable').datagrid('reload');
+          $('#drugHospitalTable').datagrid('reload');
         },
         remove:function () {
-            var rows=$('#drugBodyTable').datagrid('getSelections');
+            var rows=$('#drugHospitalTable').datagrid('getSelections');
             if(rows.length>0){
                 $.messager.confirm('确定操作','你正要删除所选的记录吗？',function (flag) {
                     if(flag){
@@ -192,18 +228,18 @@ $(function(){
                         }
                         $.ajax({
                             type:'POST',
-                            url:'/drugBody/del',
+                            url:'/drugHospital/del',
                             data:{
                                 ids:ids.join(','),
                             },
                             beforeSend:function () {
-                                $('#drugBodyTable').datagrid('loading');
+                                $('#drugHospitalTable').datagrid('loading');
                             },
                             success:function (data) {
                                 if(data){
-                                    $('#drugBodyTable').datagrid('loaded');
-                                    $('#drugBodyTable').datagrid('reload');
-                                    $('#drugBodyTable').datagrid('unselectAll');
+                                    $('#drugHospitalTable').datagrid('loaded');
+                                    $('#drugHospitalTable').datagrid('reload');
+                                    $('#drugHospitalTable').datagrid('unselectAll');
                                     $.messager.show({
                                         title:'提示',
                                         msg:data+'个用户被删除成功！',
@@ -220,12 +256,12 @@ $(function(){
             }
         },
         edit:function () {
-            var rows=$('#drugBodyTable').datagrid('getSelections');
+            var rows=$('#drugHospitalTable').datagrid('getSelections');
             if(rows.length>1){
                 $.messager.alert('警告操作!','编辑记录只能选择一条','warning');
             }else if(rows.length==1){
                 $.ajax({
-                    url:'/drugBody/getOne',
+                    url:'/drugHospital/getOne',
                     type:'get',
                     data:{
                         id:rows[0].id,
@@ -239,10 +275,11 @@ $(function(){
                         $.messager.progress('close');
                         if(data){
                             console.log(data);
-                           $('#drugBody_edit').form('load',{
+                           $('#drugHospital_edit').form('load',{
                                id:data.id,
-                               drugCode:data.drugName,
-                               bodyLimit:data.bodyLimit,
+                               drugCode:data.drug.drugName,
+                               drugId:data.drug.id,
+                               HospitalLimit:data.hospitalGrade.id,
                            }).dialog('open');
 
                         }else{

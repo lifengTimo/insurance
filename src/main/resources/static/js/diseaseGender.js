@@ -1,7 +1,7 @@
-//药品限制--> 性别限制
+//疾病险种->性别限制
 $(function(){
-	$('#drugSexTable').datagrid({
-        url:'/sexLimit/getAll',
+	$('#diseaseGenderTable').datagrid({
+        url:'/diseaseGender/getAll',
         fit:true,
         fitColumns:true,
         striped:true,
@@ -13,7 +13,7 @@ $(function(){
         pageNumber:1,
         sortName:'createTime',
         sortOder:'desc',
-        toolbar:'#drugSex_tool',
+        toolbar:'#diseaseGender_tool',
         columns:[[
             {
                 field:'id',
@@ -22,19 +22,40 @@ $(function(){
                 checkbox:true,
             },
             {
-                field:'drugCode',
-                title:'地方药品编码',
+                field:'diseaseCode',
+                title:'疾病编码',
                 width:100,
+                formatter: function(value,row,index){
+                    if (row.disease){
+                        return row.disease.diseaseCode;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
-                field:'drugName',
-                title:'地方药品名称',
+                field:'diseaseName',
+                title:'疾病名称',
                 width:100,
+                formatter: function(value,row,index){
+                    if (row.disease){
+                        return row.disease.diseaseName;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
-                field:'promptMessageName',
-                title:'限制男女',
+                field:'genderLimit',
+                title:'性别限制',
                 width:50,
+                formatter: function(value,row,index){
+                    if (row.genderLimit.valueCode=='1'){
+                        return '限制男性';
+                    } else {
+                        return '限制女性';
+                    }
+                },
             },
             {
                 field:'createTime',
@@ -44,8 +65,10 @@ $(function(){
 
         ]]
     });
+
+
 	//操作员添加
-    $('#drugSex_add').dialog({
+    $('#diseaseGender_add').dialog({
         width: 350,
         title: '新增管理',
         iconCls:'icon-admin-add',
@@ -56,17 +79,21 @@ $(function(){
             iconCls:'icon-add',
             handler:function () {
                 console.log("开始");
-                var g =  $('#sexLimitDrugCode').combogrid('grid');
+                var g =  $('#GenderLimitDrugCode').combogrid('grid');
                 var r = g.datagrid('getSelected');
-                if($('#drugSex_add').form('validate')){
+                var  json={
+                    disease:r,
+                    genderLimit:{
+                        id:$('#GenderLimitInput option:selected') .val(),
+                        dictCode:"SEX_DICT"}
+                };
+                if($('#diseaseGender_add').form('validate')){
                     $.ajax({
-                        url:'/sexLimit/insert',
+                        url:'/diseaseGender/insert',
                         type:'post',
-                        data:{
-                           drugCode:r.drugCode,
-                            drugName:r.drugName,
-                            promptMessage:$('#sexLimitInput option:selected') .val(),
-                        },
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType : "json",
+                        data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
                         beforeSend:function () {
                             $.messager.progress({
                                 text:'正在新增中。。。',
@@ -79,8 +106,8 @@ $(function(){
                                     title:'提示',
                                     msg:'新增成功',
                                 });
-                                $('#drugSex_add').dialog('close').form('reset');
-                                $('#drugSexTable').datagrid('reload');
+                                $('#diseaseGender_add').dialog('close').form('reset');
+                                $('#diseaseGenderTable').datagrid('reload');
                             }else{
                                 $.messager.alert('新增失败','未知错误导致！','warning');
                             }
@@ -92,13 +119,13 @@ $(function(){
             text:'取消',
             iconCls:'icon-redo',
             handler:function () {
-                $('#drugSex_add').form('reset');
-                $('#drugSex_add').dialog('close').close();
+                $('#diseaseGender_add').form('reset');
+                $('#diseaseGender_add').dialog('close').close();
             },
         }]
     });
     //操作员修改
-    $('#drugSex_edit').dialog({
+    $('#diseaseGender_edit').dialog({
         width: 350,
         title: '修改管理',
         iconCls:'icon-admin-add',
@@ -108,15 +135,23 @@ $(function(){
             text:'提交',
             iconCls:'icon-edit',
             handler:function () {
-                if($('#manager_edit').form('validate')){
-                    $.ajax({
-                        url:'/sexLimit/update',
-                        type:'put',
-                        data:{
-                            id:$('#id').val(),
-                            drugCode:$('#sexLimitDrugCodeEdit').val(),
-                            promptMessage:$('#sexLimitInputEdit option:selected') .val(),
+                if($('#diseaseGender_edit').form('validate')){
+                    var  json={
+                        id:$('#id').val(),
+                        disease:{
+                            id:$('#diseaseId').val(),
                         },
+                        genderLimit:{
+                            id:$('#GenderLimitInputEdit option:selected') .val(),
+                        }
+                    };
+
+                    $.ajax({
+                        url:'/diseaseGender/insert',
+                        type:'put',
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType : "json",
+                        data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
                         beforeSend:function () {
                             $.messager.progress({
                                 text:'正在修改中。。。',
@@ -129,8 +164,8 @@ $(function(){
                                     title:'提示',
                                     msg:'修改用户信息成功',
                                 });
-                                $('#drugSex_edit').dialog('close').form('reset');
-                                $('#drugSexTable').datagrid('reload');
+                                $('#diseaseGender_edit').dialog('close').form('reset');
+                                $('#diseaseGenderTable').datagrid('reload');
                             }else{
                                 $.messager.alert('修改失败','未知错误导致！','warning');
                             }
@@ -142,8 +177,8 @@ $(function(){
             text:'取消',
             iconCls:'icon-edit',
             handler:function () {
-                $('#drugSex_edit').form('reset');
-                $('#drugSex_edit').dialog('close').close();
+                $('#diseaseGender_edit').form('reset');
+                $('#diseaseGender_edit').dialog('close').close();
             },
         }]
     });
@@ -151,38 +186,44 @@ $(function(){
 
 
     //药品编码
-    $('input[name="drugCode"]').combogrid({
+    $('input[name="disease"]').combogrid({
         panelWidth:500,
-        url:'/drug/getAll',
-        idField:'drugCode',
-        textField:'drugName',
+        url:'/disease/getAll',
+        idField:'diseaseCode',
+        textField:'diseaseName',
         mode:'remote',
         fitColumns:true,
         columns:[[
-            {field:'drugCode',title:'药品编码',align:'center',width:120},
-            {field:'drugName',title:'药品名称',align:'center',width:80},
-            {field:'englishName',title:'药品英文名称',align:'center',width:60},
-            {field:'startTime',title:'开始时间',align:'center',width:60},
-            {field:'stopTime',title:'结束时间',align:'center',width:60},
-            {field:'chargeType',title:'费用等级',align:'center',width:60}
+            {field:'diseaseCode',title:'ICD10疾病编码',align:'center',width:120},
+            {field:'diseaseName',title:'疾病名称',align:'center',width:80},
+            {field:'pinyin',title:'拼音简码',align:'center',width:60},
+            {field:'startDate',title:'开始日期',align:'center',width:60},
+            {field:'stopDate',title:'结束日期',align:'center',width:60},
+            {field:'status',title:'状态',align:'center',width:60,formatter: function(value,row,index){
+                    if (value=='1'){
+                        return '有效';
+                    } else {
+                        return '无效';
+                    }
+                },}
         ]]
     });
     //管理员工具
-    drugSex_tool={
+    diseaseGender_tool={
         add:function () {
-            $('#drugSex_add').dialog('open');
-            $('input[name="manager"]').focus();
+            $('#diseaseGender_add').dialog('open');
+            $('input[name="drugCode"]').focus();
         },
         //取消所有选定
         redo:function () {
-            $('#drugSexTable').datagrid('unselectAll');
+            $('#diseaseGenderTable').datagrid('unselectAll');
         },
         //当前页面刷新
         reload:function () {
-          $('#drugSexTable').datagrid('reload');
+          $('#diseaseGenderTable').datagrid('reload');
         },
         remove:function () {
-            var rows=$('#drugSexTable').datagrid('getSelections');
+            var rows=$('#diseaseGenderTable').datagrid('getSelections');
             if(rows.length>0){
                 $.messager.confirm('确定操作','你正要删除所选的记录吗？',function (flag) {
                     if(flag){
@@ -192,18 +233,18 @@ $(function(){
                         }
                         $.ajax({
                             type:'POST',
-                            url:'/sexLimit/del',
+                            url:'/diseaseGender/del',
                             data:{
                                 ids:ids.join(','),
                             },
                             beforeSend:function () {
-                                $('#drugSexTable').datagrid('loading');
+                                $('#diseaseGenderTable').datagrid('loading');
                             },
                             success:function (data) {
                                 if(data){
-                                    $('#drugSexTable').datagrid('loaded');
-                                    $('#drugSexTable').datagrid('reload');
-                                    $('#drugSexTable').datagrid('unselectAll');
+                                    $('#diseaseGenderTable').datagrid('loaded');
+                                    $('#diseaseGenderTable').datagrid('reload');
+                                    $('#diseaseGenderTable').datagrid('unselectAll');
                                     $.messager.show({
                                         title:'提示',
                                         msg:data+'个用户被删除成功！',
@@ -220,12 +261,12 @@ $(function(){
             }
         },
         edit:function () {
-            var rows=$('#drugSexTable').datagrid('getSelections');
+            var rows=$('#diseaseGenderTable').datagrid('getSelections');
             if(rows.length>1){
                 $.messager.alert('警告操作!','编辑记录只能选择一条','warning');
             }else if(rows.length==1){
                 $.ajax({
-                    url:'/sexLimit/getOne',
+                    url:'/diseaseGender/getOne',
                     type:'get',
                     data:{
                         id:rows[0].id,
@@ -239,10 +280,11 @@ $(function(){
                         $.messager.progress('close');
                         if(data){
                             console.log(data);
-                           $('#drugSex_edit').form('load',{
+                           $('#diseaseGender_edit').form('load',{
                                id:data.id,
-                               drugCode:data.drugName,
-                               sexLimit:data.promptMessage,
+                               diseaseName:data.disease.diseaseName,
+                               diseaseId:data.disease.id,
+                               genderLimit:data.genderLimit.id,
                            }).dialog('open');
 
                         }else{

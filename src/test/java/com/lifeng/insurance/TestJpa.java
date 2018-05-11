@@ -14,9 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.lifeng.insurance.dao.AdminRepository;
 import com.lifeng.insurance.dao.DrugBodyLimitRepository;
+import com.lifeng.insurance.dao.DrugHospitalRepository;
+import com.lifeng.insurance.dao.DrugInsuranceTypeRepository;
 import com.lifeng.insurance.dao.DrugRepository;
 import com.lifeng.insurance.dao.PublicDictRepository;
 import com.lifeng.insurance.model.Admin;
+import com.lifeng.insurance.model.DrugInsuranceType;
 import com.lifeng.insurance.model.Nav;
 import com.lifeng.insurance.model.PublicDict;
 import com.lifeng.insurance.service.AdminService;
@@ -46,7 +49,14 @@ public class TestJpa {
 	
 	@Autowired
 	private DrugBodyLimitService bodyService;
-	//@Test
+	
+	@Autowired
+	private DrugHospitalRepository hosDao;
+	
+	
+	@Autowired
+	private DrugInsuranceTypeRepository typeDao;
+	/*//@Test
 	public void TestExample(){
 		Admin admin=new Admin();
 		admin.setId(1002);
@@ -58,7 +68,7 @@ public class TestJpa {
 	public void TestExample11(){
 		List<Nav> list = navService.selectAllNav("0");
 		System.out.println(list);
-	}
+	}*/
 	
 	/*@Test
 	public void TestAminAdd() {
@@ -106,6 +116,16 @@ public class TestJpa {
 	public void getAllBody() {
 		System.out.println(bodyService.getAll(new PageRequest(1, 200)).getRows());
 	}*/
+	
+	/*@Test
+	public void getAllPository() {
+		System.out.println(hosDao.findAll().get(0).getDrug().getDrugName());
+	}*/
+	
+	@Test
+	public void getAllType() {
+		System.out.println(typeDao.findAll());
+	}
 }
 
 

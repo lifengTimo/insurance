@@ -79,7 +79,7 @@
 }
 
 .icon-system{
-	background:url('icons/system.ico') no-repeat center center;
+	background:url('icons/system.png') no-repeat center center;
 }
 
 .icon-manager{
@@ -135,10 +135,10 @@
 	background:url('icons/large_chart.png') no-repeat center center;
 }
 .icon-drug{
-	background:url('icons/prescription_drugs.ico') no-repeat center center;
+	background:url('icons/drug.png') no-repeat center center;
 }
 .icon-virus{
-	background:url('icons/virus.png') no-repeat center center;
+	background:url('icons/disease.png') no-repeat center center;
 }
 .icon-syringe{
 	background:url('icons/syringe.ico') no-repeat center center;
@@ -147,7 +147,7 @@
 	background:url('icons/treatment.png') no-repeat center center;
 }
 .icon-model{
-	background:url('icons/gameboy4iphone.png') no-repeat center center;
+	background:url('icons/model.png') no-repeat center center;
 }
 .icon-pie{
 	background:url('icons/pie-chart.png') no-repeat center center;
@@ -160,4 +160,37 @@
 }
 .icon-hospital{
 	background:url('icons/hospital.png') no-repeat center center;
+}
+.icon-day{
+	background:url('icons/days.png') no-repeat center center;
+}
+.icon-insuranceType{
+	background:url('icons/insuranceType.png') no-repeat center center;
+}
+.icon-gender{
+	 background:url('icons/gender.png') no-repeat center center;
+ }
+.icon-outp{
+	background:url('icons/outi.png') no-repeat center center;
+}
+.icon-inp{
+	background:url('icons/inp.png') no-repeat center center;
+}
+.icon-price{
+	background:url('icons/price.png') no-repeat center center;
+}
+.icon-totalPrice{
+	background:url('icons/totalPrice.png') no-repeat center center;
+}
+.icon-method{
+	background:url('icons/method.png') no-repeat center center;
+}
+.icon-frequency{
+	background:url('icons/frequency.png') no-repeat center center;
+}
+.icon-repeat{
+	background:url('icons/repeat.png') no-repeat center center;
+}
+.icon-count{
+	background:url('icons/count.png') no-repeat center center;
 }

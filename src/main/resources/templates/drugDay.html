@@ -1,0 +1,24 @@
+<table id="drugDayTable">
+</table>
+<div id="drugDay_tool" style="padding: 5px;">
+    <div style="margin-bottom: 5px;">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="drugDay_tool.add();">添加</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="drugDay_tool.remove();">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-modify" plain="true" onclick="drugDay_tool.edit()">修改</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="drugDay_tool.reload()">刷新</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="drugDay_tool.redo()">取消选择</a>
+    </div>
+</div>
+<form id="drugDay_add" style="margin: 0;padding: 5px 0 0 25px;color: #333;">
+    <p>药品编码：<input id="DayLimitDrugCode" type="text" name="drugCode" class="textbox" style="width: 200px;"></p>
+  <!--  <p>性别限制：<input  id="sexLimitInput" class="textbox" name="sexLimit" style="width: 205px;"></p> -->
+    <p>天数限制：<input id="dayLimiInput"  class="textbox" style="width: 100px;text-align: center;"/>天</p>
+</form>
+<form id="drugDay_edit" style="margin: 0;padding: 5px 0 0 25px;color: #333;">
+    <input type="hidden" id="id" name="id" class="textbox" style="width: 200px;">
+    <input type="hidden" id="drugId" name="drugId" class="textbox" style="width: 200px;">
+    <p>药品编码：<input id="DayLimitDrugCodeEdit" type="text" name="drugCode" class="textbox" style="width: 200px;" disabled="disabled"></p>
+    <!--  <p>性别限制：<input  id="sexLimitInput" class="textbox" name="sexLimit" style="width: 205px;"></p> -->
+    <p>天数限制：<input id="dayLimiInputEdit"  name="day" class="textbox" style="width: 100px;text-align: center;"/>天</p>
+</form>
+<script type="type/javascript" src="/js/drugDay.js"></script>

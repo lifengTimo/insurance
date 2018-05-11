@@ -142,8 +142,8 @@ $(function(){
             text:'取消',
             iconCls:'icon-edit',
             handler:function () {
-                $('#manager_edit').form('reset');
-                $('#manager_edit').dialog('close').close();
+                $('#drugBody_edit').form('reset');
+                $('#drugBody_edit').dialog('close').close();
             },
         }]
     });

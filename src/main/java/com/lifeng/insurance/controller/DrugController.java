@@ -24,7 +24,15 @@ public class DrugController {
 	
 	@Autowired
 	private DrugService drugService;
-	
+	/**
+	 * 
+	* @Title: getAll 
+	* @Description: TODO(根据条件模糊查询药品) 
+	* @param @param q
+	* @param @return  参数说明 
+	* @return List<Drug>    返回类型 
+	* @throws
+	 */
 	@RequestMapping("/getAll")
 	@ResponseBody
 	public List<Drug> getAll(String q){

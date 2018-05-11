@@ -28,6 +28,7 @@ public class Drug implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	
 	@Id
 	@Column(name = "id",columnDefinition="bigint COMMENT '主键，自动生成'")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

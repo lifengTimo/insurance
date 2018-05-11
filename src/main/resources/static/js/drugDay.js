@@ -1,7 +1,7 @@
 //药品限制--> 性别限制
 $(function(){
-	$('#drugSexTable').datagrid({
-        url:'/sexLimit/getAll',
+	$('#drugDayTable').datagrid({
+        url:'/drugDay/getAll',
         fit:true,
         fitColumns:true,
         striped:true,
@@ -13,7 +13,7 @@ $(function(){
         pageNumber:1,
         sortName:'createTime',
         sortOder:'desc',
-        toolbar:'#drugSex_tool',
+        toolbar:'#drugDay_tool',
         columns:[[
             {
                 field:'id',
@@ -22,18 +22,32 @@ $(function(){
                 checkbox:true,
             },
             {
-                field:'drugCode',
-                title:'地方药品编码',
+                field:'drug',
+                title:'药品编码',
                 width:100,
+                formatter: function(value,row,index){
+                    if (row.drug){
+                        return row.drug.drugCode;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
-                field:'drugName',
-                title:'地方药品名称',
+                field:'drug.drugName',
+                title:'药品名称',
                 width:100,
+                formatter: function(value,row,index){
+                    if (row.drug){
+                        return row.drug.drugName;
+                    } else {
+                        return value;
+                    }
+                },
             },
             {
-                field:'promptMessageName',
-                title:'限制男女',
+                field:'day',
+                title:'医院等级限制',
                 width:50,
             },
             {
@@ -44,8 +58,10 @@ $(function(){
 
         ]]
     });
-	//操作员添加
-    $('#drugSex_add').dialog({
+
+
+	//药品天数限制添加
+    $('#drugDay_add').dialog({
         width: 350,
         title: '新增管理',
         iconCls:'icon-admin-add',
@@ -56,17 +72,19 @@ $(function(){
             iconCls:'icon-add',
             handler:function () {
                 console.log("开始");
-                var g =  $('#sexLimitDrugCode').combogrid('grid');
+                var g =  $('#DayLimitDrugCode').combogrid('grid');
                 var r = g.datagrid('getSelected');
-                if($('#drugSex_add').form('validate')){
+                var  json={
+                    drug:r,
+                   day:$('#dayLimiInput').val(),
+                };
+                if($('#drugDay_add').form('validate')){
                     $.ajax({
-                        url:'/sexLimit/insert',
+                        url:'/drugDay/insert',
                         type:'post',
-                        data:{
-                           drugCode:r.drugCode,
-                            drugName:r.drugName,
-                            promptMessage:$('#sexLimitInput option:selected') .val(),
-                        },
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType : "json",
+                        data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
                         beforeSend:function () {
                             $.messager.progress({
                                 text:'正在新增中。。。',
@@ -79,8 +97,8 @@ $(function(){
                                     title:'提示',
                                     msg:'新增成功',
                                 });
-                                $('#drugSex_add').dialog('close').form('reset');
-                                $('#drugSexTable').datagrid('reload');
+                                $('#drugDay_add').dialog('close').form('reset');
+                                $('#drugDayTable').datagrid('reload');
                             }else{
                                 $.messager.alert('新增失败','未知错误导致！','warning');
                             }
@@ -92,13 +110,13 @@ $(function(){
             text:'取消',
             iconCls:'icon-redo',
             handler:function () {
-                $('#drugSex_add').form('reset');
-                $('#drugSex_add').dialog('close').close();
+                $('#drugDay_add').form('reset');
+                $('#drugDay_add').dialog('close').close();
             },
         }]
     });
     //操作员修改
-    $('#drugSex_edit').dialog({
+    $('#drugDay_edit').dialog({
         width: 350,
         title: '修改管理',
         iconCls:'icon-admin-add',
@@ -109,14 +127,20 @@ $(function(){
             iconCls:'icon-edit',
             handler:function () {
                 if($('#manager_edit').form('validate')){
-                    $.ajax({
-                        url:'/sexLimit/update',
-                        type:'put',
-                        data:{
-                            id:$('#id').val(),
-                            drugCode:$('#sexLimitDrugCodeEdit').val(),
-                            promptMessage:$('#sexLimitInputEdit option:selected') .val(),
+                    var  json={
+                        id:$('#id').val(),
+                        drug:{
+                            id:$('#drugId').val(),
                         },
+                        day:$('#dayLimiInputEdit').val(),
+                    };
+
+                    $.ajax({
+                        url:'/drugDay/insert',
+                        type:'put',
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType : "json",
+                        data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
                         beforeSend:function () {
                             $.messager.progress({
                                 text:'正在修改中。。。',
@@ -129,8 +153,8 @@ $(function(){
                                     title:'提示',
                                     msg:'修改用户信息成功',
                                 });
-                                $('#drugSex_edit').dialog('close').form('reset');
-                                $('#drugSexTable').datagrid('reload');
+                                $('#drugDay_edit').dialog('close').form('reset');
+                                $('#drugDayTable').datagrid('reload');
                             }else{
                                 $.messager.alert('修改失败','未知错误导致！','warning');
                             }
@@ -142,8 +166,8 @@ $(function(){
             text:'取消',
             iconCls:'icon-edit',
             handler:function () {
-                $('#drugSex_edit').form('reset');
-                $('#drugSex_edit').dialog('close').close();
+                $('#drugDay_edit').form('reset');
+                $('#drugDay_edit').dialog('close').close();
             },
         }]
     });
@@ -168,21 +192,21 @@ $(function(){
         ]]
     });
     //管理员工具
-    drugSex_tool={
+    drugDay_tool={
         add:function () {
-            $('#drugSex_add').dialog('open');
-            $('input[name="manager"]').focus();
+            $('#drugDay_add').dialog('open');
+            $('input[name="drugCode"]').focus();
         },
         //取消所有选定
         redo:function () {
-            $('#drugSexTable').datagrid('unselectAll');
+            $('#drugDayTable').datagrid('unselectAll');
         },
         //当前页面刷新
         reload:function () {
-          $('#drugSexTable').datagrid('reload');
+          $('#drugDayTable').datagrid('reload');
         },
         remove:function () {
-            var rows=$('#drugSexTable').datagrid('getSelections');
+            var rows=$('#drugDayTable').datagrid('getSelections');
             if(rows.length>0){
                 $.messager.confirm('确定操作','你正要删除所选的记录吗？',function (flag) {
                     if(flag){
@@ -192,18 +216,18 @@ $(function(){
                         }
                         $.ajax({
                             type:'POST',
-                            url:'/sexLimit/del',
+                            url:'/drugDay/del',
                             data:{
                                 ids:ids.join(','),
                             },
                             beforeSend:function () {
-                                $('#drugSexTable').datagrid('loading');
+                                $('#drugDayTable').datagrid('loading');
                             },
                             success:function (data) {
                                 if(data){
-                                    $('#drugSexTable').datagrid('loaded');
-                                    $('#drugSexTable').datagrid('reload');
-                                    $('#drugSexTable').datagrid('unselectAll');
+                                    $('#drugDayTable').datagrid('loaded');
+                                    $('#drugDayTable').datagrid('reload');
+                                    $('#drugDayTable').datagrid('unselectAll');
                                     $.messager.show({
                                         title:'提示',
                                         msg:data+'个用户被删除成功！',
@@ -220,12 +244,12 @@ $(function(){
             }
         },
         edit:function () {
-            var rows=$('#drugSexTable').datagrid('getSelections');
+            var rows=$('#drugDayTable').datagrid('getSelections');
             if(rows.length>1){
                 $.messager.alert('警告操作!','编辑记录只能选择一条','warning');
             }else if(rows.length==1){
                 $.ajax({
-                    url:'/sexLimit/getOne',
+                    url:'/drugDay/getOne',
                     type:'get',
                     data:{
                         id:rows[0].id,
@@ -239,10 +263,11 @@ $(function(){
                         $.messager.progress('close');
                         if(data){
                             console.log(data);
-                           $('#drugSex_edit').form('load',{
+                           $('#drugDay_edit').form('load',{
                                id:data.id,
-                               drugCode:data.drugName,
-                               sexLimit:data.promptMessage,
+                               drugCode:data.drug.drugName,
+                               drugId:data.drug.id,
+                               day:data.day,
                            }).dialog('open');
 
                         }else{
