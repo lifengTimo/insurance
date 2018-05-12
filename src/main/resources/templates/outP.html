@@ -1,0 +1,264 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        ul,
+        ol {
+            list-style: none;
+        }
+        /** 重置文本格式元素 **/
+
+        a {
+            text-decoration: none;
+        }
+        #top{
+            height: 80px;
+            background: #E6EEF8;
+            padding:10px;
+        }
+        #top label,ul{
+            float: left;
+        }
+        ul li{
+            list-style: none;
+            float: left;
+            margin-right: 15px;
+        }
+        #east{
+            width: 270px;
+            float: left;
+            height: max-content;
+            border-right: 8px solid #eee;
+        }
+        #eastTop label,select, button{
+            margin-left: 15px;
+          }
+    </style>
+</head>
+
+
+<div>
+    <div id="top" style="">
+        <label style="margin-top: 15px;">读卡:<input type="text" width="100px"></label>
+        <ul>
+            <li>姓名：</li>
+            <li>性别：</li>
+            <li>年龄：</li>
+            <li>主要诊断：</li>
+        </ul>
+
+    </div>
+    <div id="east" style="">
+        <div id="esstTop" style="height: 25px;background: white;width: 270px;padding: 2px 0 3px 0;">
+            <label style="margin-left: 15px;">专业:</label>
+            <select style="width: 120px;background:#E6EEF8;">
+                <option value="100">内一科专业</option>
+                <option value="101">内二科专业</option>
+                <option value="102">皮肤科专业</option>
+                <option value="103">眼科科专业</option>
+                <option value="104">口腔科专业</option>
+            </select>
+            <button>刷新</button>
+        </div>
+        <table id="eastTable" class="easyui-datagrid" style="width:270px;height:700px;background: #E6EEF8">
+            <thead>
+            <tr>
+                <th field="name1" width="120">门诊号</th>
+                <th field="name2" width="90">姓名</th>
+                <th field="name3" width="60">状态</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td</td>
+                <td</td>
+                <td</td>
+            </tr>
+            <tr>
+                <td</td>
+                <td</td>
+                <td</td>
+            </tr>
+            <tr>
+                <td</td>
+                <td</td>
+                <td</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div id="center"  >
+        <div >
+            <table id="dg" class="easyui-datagrid" title="门诊处方" style="width:auto;height:700px"
+                       data-options="
+				iconCls: 'icon-prescription',
+				singleSelect: true,
+				toolbar: '#tb',
+				url: 'datagrid_data1.json',
+				method: 'get',
+				onClickRow: onClickRow
+			">
+                <thead>
+                <tr >
+                    <th field="name1" width="180" data-options=" width:400,align:'left' , halign: 'center',formatter:function(value,row){	return row.drugName;	}" editor="{type:'combogrid',options:{
+                         url: '/drug/getAll',
+                           panelWidth:320,
+                           idField: 'id',
+                           textField: 'drugName',
+                          columns:[[
+                                {field:'drugCode',title:'药品编码',align:'center',width:120},
+                                {field:'drugName',title:'药品名称',align:'center',width:120},
+                                {field:'chargeType',title:'费用等级',align:'center',width:60}
+                         ]],
+                         onSelect: function (index, row) {
+                            var grid = $('#dg');
+                            var rowIndex= grid.datagrid('getRowIndex',grid.datagrid('getSelected'));
+                            grid.datagrid('beginEdit', rowIndex);
+                            var editors = grid.datagrid('getEditors', rowIndex);
+                            var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'name1'});
+				            var productname = $(ed.target).combobox('getText');
+				            console.log(productname);
+
+
+                         }
+                    }}">药品名称</th>
+                    <th field="name2" width="90"  data-options=" width:400,align:'left' , halign: 'center',editor:'numberbox'">用量</th>
+                    <th field="name3" width="90"  data-options=" width:400,align:'left' , halign: 'center',formatter:function(value,row){	return row.valueName1;	}"
+                        editor="{type:'combobox',options:{
+                        		valueField:'id',
+								textField:'valueName',
+								method:'get',
+								url:'/dict/getAll?type=UNIT_DICT',
+								required:true
+                    }}">用量单位</th>
+                    <th field="name4" width="90"  data-options=" width:400,align:'left' , halign: 'center',formatter:function(value,row){	return row.valueName2;	}"
+                        editor="{type:'combobox',options:{
+                        		valueField:'id',
+								textField:'valueName',
+								method:'get',
+								url:'/dict/getAll?type=ORDER_FREQ',
+								required:true
+                    }}">用法</th>
+                    <th field="name5" width="150"  data-options=" width:400,align:'left' , halign: 'center',formatter:function(value,row){	return row.valueName3;	}"
+                        editor="{type:'combobox',options:{
+                        		valueField:'id',
+								textField:'valueName',
+								method:'get',
+								url:'/dict/getAll?type=DRUG_USEWAY',
+								required:true
+                    }}">途径</th>
+                    <th field="name6" width="90"  data-options=" width:400,align:'left' , halign: 'center'" editor="numberbox">天数</th>
+                    <th field="name8" width="90"  data-options=" width:400,align:'left' , halign: 'center'"
+                    editor="{type:'numberbox',options:{precision:2}}">单价</th>
+                    <th field="name9" width="90"  data-options=" width:400,align:'left' , halign: 'center',formatter:function(value,row){	return row.valueName4;	}"
+                        editor="{type:'combobox',options:{
+                        		valueField:'id',
+								textField:'valueName',
+								method:'get',
+								url:'/dict/getAll?type=INSURANCE_TYPE',
+								required:true
+                    }}">报销类型</th>
+                    <th field="name10" width="320"  data-options=" width:400,align:'left' , halign: 'center'" editor="text">备注</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="tb" style="height:auto">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增行</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除行</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存记录</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消编辑</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>
+</div>
+<script type="text/javascript">
+    var editIndex = undefined;
+    function endEditing(){
+        if (editIndex == undefined){return true}
+        if ($('#dg').datagrid('validateRow', editIndex)){
+
+            var productname;
+            var ed;
+            ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'name1'});
+            productname = $(ed.target).combobox('getText');
+            $('#dg').datagrid('getRows')[editIndex]['drugName'] = productname;
+            //$(ed.target).combogrid('setValue',productname);
+
+            //$(ed2.target).combobox('setText',productname2);
+
+            ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'name3'});
+            productname = $(ed.target).combobox('getText');
+            console.log(productname);
+            $('#dg').datagrid('getRows')[editIndex]['valueName1'] = productname;
+
+
+            ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'name4'});
+            productname = $(ed.target).combobox('getText');
+            console.log(productname);
+            $('#dg').datagrid('getRows')[editIndex]['valueName2'] = productname;
+
+
+            ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'name5'});
+            productname = $(ed.target).combobox('getText');
+            console.log(productname);
+            $('#dg').datagrid('getRows')[editIndex]['valueName3'] = productname;
+
+
+            ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'name9'});
+            productname = $(ed.target).combobox('getText');
+            console.log(productname);
+            $('#dg').datagrid('getRows')[editIndex]['valueName4'] = productname;
+
+
+            $('#dg').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickRow(index){
+        if (editIndex != index){
+            if (endEditing()){
+                $('#dg').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+                editIndex = index;
+            } else {
+                $('#dg').datagrid('selectRow', editIndex);
+            }
+        }
+    }
+    function append(){
+        if (endEditing()){
+            $('#dg').datagrid('appendRow',{status:'P'});
+            editIndex = $('#dg').datagrid('getRows').length-1;
+            $('#dg').datagrid('selectRow', editIndex)
+                .datagrid('beginEdit', editIndex);
+        }
+    }
+    function removeit(){
+        if (editIndex == undefined){return}
+        $('#dg').datagrid('cancelEdit', editIndex)
+            .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+    function accept(){
+        if (endEditing()){
+            $('#dg').datagrid('acceptChanges');
+        }
+    }
+    function reject(){
+        $('#dg').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges(){
+        var rows = $('#dg').datagrid('getRows');
+        for(var i=0;i<rows.length;i++){
+            console.log(+rows[i].name1+'||'+rows[i].name2+'||'+rows[i].name3+'||'+rows[i].name4+'||'+rows[i].name5+'||'+rows[i].name6+'||'+rows[i].name7+'||'+rows[i].name8+'||'+rows[i].name9+'||'+rows[i].name10);
+        }
+    }
+</script>

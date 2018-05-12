@@ -25,6 +25,7 @@ import com.lifeng.insurance.model.PublicDict;
 import com.lifeng.insurance.service.AdminService;
 import com.lifeng.insurance.service.DrugBodyLimitService;
 import com.lifeng.insurance.service.NavService;
+import com.lifeng.insurance.service.PublicDictService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = InsuranceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,6 +57,10 @@ public class TestJpa {
 	
 	@Autowired
 	private DrugInsuranceTypeRepository typeDao;
+	
+	
+	@Autowired
+	private PublicDictService dictService;
 	/*//@Test
 	public void TestExample(){
 		Admin admin=new Admin();
@@ -124,7 +129,7 @@ public class TestJpa {
 	
 	@Test
 	public void getAllType() {
-		System.out.println(typeDao.findAll());
+		System.out.println(dictService.getAllByType("INSURANCE_TYPE"));
 	}
 }
 

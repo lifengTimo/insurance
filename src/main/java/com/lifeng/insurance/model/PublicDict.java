@@ -45,8 +45,8 @@ public class PublicDict implements Serializable {
 	@Column(name="pingyin",columnDefinition="varchar(10) COMMENT '字典表对应的id编码'")
 	private String pinyin;
 	//排序规则
-	@Column(name="sort_No",columnDefinition="varchar(10) COMMENT '排序规则'")
-	private String sortNo;
+	@Column(name="sort",columnDefinition="varchar(10) COMMENT '排序规则'")
+	private String sort;
 	public Integer getId() {
 		return id;
 	}
@@ -83,16 +83,17 @@ public class PublicDict implements Serializable {
 	public void setPinyin(String pinyin) {
 		this.pinyin = pinyin;
 	}
-	public String getSortNo() {
-		return sortNo;
+	public String getSort() {
+		return sort;
 	}
-	public void setSortNo(String sortNo) {
-		this.sortNo = sortNo;
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
 	@Override
 	public String toString() {
 		return "PublicDict [id=" + id + ", dictCode=" + dictCode + ", dictName=" + dictName + ", valueCode=" + valueCode
-				+ ", valueName=" + valueName + ", pinyin=" + pinyin + ", sortNo=" + sortNo + "]";
+				+ ", valueName=" + valueName + ", pinyin=" + pinyin + ", sort=" + sort + "]";
 	}
+	
 	
 }
