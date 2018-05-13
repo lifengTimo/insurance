@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenerationTime;
 
 import com.alibaba.fastjson.annotation.JSONField;
 /**
- * 限制性别model
+ * 药品限制性别model
  * @author PA
  *
  */
@@ -38,7 +38,7 @@ public class SexLimit implements Serializable {
 	/**
 	 * 地方药品编码
 	 */
-	@Column(name = "drug_Code",columnDefinition="varchar(32) COMMENT '地方药品编码'")
+	@Column(name = "drug_Code",columnDefinition="varchar(32) COMMENT '地方药品编码'",unique=true)
 	private String  drugCode;
 	/**
 	 * 地方药品名称

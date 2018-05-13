@@ -138,7 +138,7 @@ $(function(){
                         drug:{
                             id:$('#drugId').val(),
                         },
-                        TypeGrade:{
+                        insuranceType:{
                             id:$('#TypeLimitInputEdit option:selected') .val(),
                         }
                     };
@@ -146,6 +146,7 @@ $(function(){
                     $.ajax({
                         url:'/drugType/insert',
                         type:'put',
+                        async: true,
                         contentType : 'application/json;charset=utf-8', //设置请求头信息
                         dataType : "json",
                         data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
@@ -275,7 +276,7 @@ $(function(){
                                id:data.id,
                                drugCode:data.drug.drugName,
                                drugId:data.drug.id,
-                               TypeLimit:data.TypeGrade.id,
+                               TypeLimit:data.insuranceType.id,
                            }).dialog('open');
 
                         }else{

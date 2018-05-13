@@ -38,7 +38,7 @@ public class DrugBodyLimit implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	// 药品编码
-	@Column(name = "drug_Code", columnDefinition = "varchar(100) COMMENT '药品编码'")
+	@Column(name = "drug_Code", columnDefinition = "varchar(100) COMMENT '药品编码'",unique=true)
 	private String drugCode;
 	// 药品名称
 	@Column(name = "drug_Name", columnDefinition = "varchar(100) COMMENT '药品名称'")

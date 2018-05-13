@@ -36,6 +36,11 @@ public class DrugDayServiceImpl implements DrugDayService {
 
 	@Override
 	public int insert(DrugDay day) {
+		if(day.getId()!=null) {
+			DrugDay oldDay=dayDao.getOne(day.getId());
+			oldDay.setDay(day.getDay());
+			day=oldDay;
+		}
 		DrugDay save = dayDao.save(day);
 		if(save==null) {
 			return 0;

@@ -13,12 +13,18 @@
             text-decoration: none;
         }
         #top{
-            height: 80px;
+            height: 40px;
             background: #E6EEF8;
             padding:10px;
+            line-height: 25px;
         }
         #top label,ul{
             float: left;
+            margin: 0px;
+        }
+        #top ul li label{
+            float: right;
+            color:#3f3f3f;
         }
         ul li{
             list-style: none;
@@ -40,12 +46,12 @@
 
 <div>
     <div id="top" style="">
-        <label style="margin-top: 15px;">读卡:<input type="text" width="100px"></label>
+        <label style="">读卡:<input type="text" name="idNo" data-options="required:true" width="100px"></label>
         <ul>
-            <li>姓名：</li>
-            <li>性别：</li>
-            <li>年龄：</li>
-            <li>主要诊断：</li>
+            <li>姓名：<label id="name"/> <label id="id" hidden="hidden"/></li>
+            <li>性别：<label id="sex"/> </li>
+            <li>年龄：<label id="age"/> </li>
+            <li>主要诊断：<input type="text" class="textbox" style="width: 200px;" name="topDisease"></li>
         </ul>
 
     </div>
@@ -72,19 +78,19 @@
             </thead>
             <tbody>
             <tr>
-                <td</td>
-                <td</td>
-                <td</td>
+                <td>2018051500001</td>
+                <td>提莫</td>
+                <td>待诊</td>
             </tr>
             <tr>
-                <td</td>
-                <td</td>
-                <td</td>
+                <td>2018051500002</td>
+                <td>李四</td>
+                <td>待诊</td>
             </tr>
             <tr>
-                <td</td>
-                <td</td>
-                <td</td>
+                <td>2018051500005</td>
+                <td>王五</td>
+                <td>复诊</td>
             </tr>
 
             </tbody>
@@ -173,7 +179,7 @@
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除行</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存记录</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">取消编辑</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-good',plain:true" onclick="getChanges()">提交</a>
 </div>
 <script type="text/javascript">
     var editIndex = undefined;
@@ -256,9 +262,74 @@
         editIndex = undefined;
     }
     function getChanges(){
-        var rows = $('#dg').datagrid('getRows');
+       var rows = $('#dg').datagrid('getRows');
+       var details=[];
+
         for(var i=0;i<rows.length;i++){
-            console.log(+rows[i].name1+'||'+rows[i].name2+'||'+rows[i].name3+'||'+rows[i].name4+'||'+rows[i].name5+'||'+rows[i].name6+'||'+rows[i].name7+'||'+rows[i].name8+'||'+rows[i].name9+'||'+rows[i].name10);
+            console.log(+rows[i].name1+'||'+rows[i].name2+'||'+rows[i].name3+'||'+rows[i].name4+'||'+rows[i].name5+'||'+rows[i].name6+'||'+rows[i].name8+'||'+rows[i].name9+'||'+rows[i].name10);
+            details.push({drug:{
+                    id:rows[i].name1,
+                },
+                userNum:rows[i].name2,
+                useUnit:{
+                    id:rows[i].name3
+                },
+                freq:{
+                    id:rows[i].name4,
+                },
+                userWay:{
+                    id:rows[i].name5,
+                },
+                day:rows[i].name6,
+                price:rows[i].name8,
+                reimburseType:{
+                    id:rows[i].name9,
+                },
+                remarks:rows[i].name10,
+            });
         }
+        var person={
+            id:$('#id').html(),
+        };
+        var disease={
+            id:$("input[name='topDisease']").val(),
+        };
+        var json={
+            patient:person,
+            disease:disease,
+            details:details,
+        };
+        $.ajax({
+            url:'/outp/insert',
+            type:'post',
+            contentType : 'application/json;charset=utf-8', //设置请求头信息
+            dataType : "json",
+            data:JSON.stringify(json), //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
+            beforeSend:function () {
+                /*messager.progress({
+                    text:'正在新增中。。。',
+                });*/
+            },
+            success : function (data,response, status) {
+
+               // $.messager.progress('close');
+                var result=data.result;
+                if (result===''){
+                    result='提交成功';
+                }
+                console.log(result);
+                $.messager.alert('提示信息',result);
+                /*
+                if(data>0){
+                    $.messager.show({
+                        title:'提示',
+                        msg:'新增成功',
+                    });
+                }else{
+                    $.messager.alert('新增失败','未知错误导致！','warning');
+                }*/
+            }
+        });
     }
 </script>
+<script type="type/javascript" src="/js/outp.js"></script>

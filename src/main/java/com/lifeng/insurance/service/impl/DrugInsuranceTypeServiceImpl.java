@@ -27,34 +27,39 @@ public class DrugInsuranceTypeServiceImpl implements DrugInsuranceTypeService{
 
 	//药品险种限制dao
 	@Autowired
-	private DrugInsuranceTypeRepository InsuranceTypeDao;
+	private DrugInsuranceTypeRepository insuranceTypeDao;
 	
 	//公共字典Dao
 	@Autowired
 	private PublicDictRepository dictDao;
 	@Override
 	public PageReturn getAll(Pageable pageable) {
-		Page<DrugInsuranceType> results = InsuranceTypeDao.findAll(pageable);
+		Page<DrugInsuranceType> results = insuranceTypeDao.findAll(pageable);
 		System.out.println(results.getContent());
 		return PageReturn.instance((int)results.getTotalElements(), results.getContent());
 	}
 
 	@Override
-	public int insert(DrugInsuranceType InsuranceType) {
-		InsuranceTypeDao.save(InsuranceType);
+	public int insert(DrugInsuranceType insuranceType) {
+		if(insuranceType.getId()!=null) {
+			DrugInsuranceType old = insuranceTypeDao.getOne(insuranceType.getId());
+			old.setInsuranceType(insuranceType.getInsuranceType());
+			insuranceType=old;
+		}
+		insuranceTypeDao.save(insuranceType);
 		return 1;
 	}
 
 	@Override
 	public DrugInsuranceType getOne(Integer id) {
-		Optional<DrugInsuranceType> results = InsuranceTypeDao.findById(id);
+		Optional<DrugInsuranceType> results = insuranceTypeDao.findById(id);
 		return results.get();
 	}
 
 	@Override
 	public int del(String ids) {
 		String[] split = ids.split(",");	
-		return InsuranceTypeDao.delIds(Arrays.asList(split));
+		return insuranceTypeDao.delIds(Arrays.asList(split));
 	}
 
 }

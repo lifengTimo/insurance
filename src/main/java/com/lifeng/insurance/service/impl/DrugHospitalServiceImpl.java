@@ -34,6 +34,11 @@ public class DrugHospitalServiceImpl implements DrugHospitalService{
 
 	@Override
 	public int insert(DrugHosipital hospital) {
+		if(hospital.getId()!=null) {
+			DrugHosipital old=hospitalDao.getOne(hospital.getId());
+			old.setHospitalGrade(hospital.getHospitalGrade());
+			hospital=old;
+		}
 		hospitalDao.save(hospital);
 		return 1;
 	}

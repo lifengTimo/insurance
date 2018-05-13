@@ -47,7 +47,7 @@ public class Disease implements Serializable {
 	@Column(name="stop_date",columnDefinition="date  COMMENT '结束时间'")
 	private Date stopDate;
 	//有效标志 0 无效 1 有效
-	@Column(name="status",columnDefinition="varchar(1)  COMMENT '有效标志  0 无效 1 有效 ' default 1 ",nullable=false)
+	@Column(name="status",columnDefinition="varchar(1)  COMMENT '有效标志  0 无效 1 有效 ' default 1 ")
 	private String status;
 	public Integer getId() {
 		return id;

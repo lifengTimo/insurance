@@ -14,7 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lifeng.insurance.model.TestUser;
-
+/**
+ * 
+* @ClassName: PageController 
+* @Description: TODO(跳转控制) 
+* @author lifeng
+* @date 2018年5月13日 上午10:44:18 
+*
+ */
 @Controller
 @RequestMapping("insurance")
 public class PageController {
