@@ -54,6 +54,12 @@ public class OutpMaster implements Serializable {
     @JoinColumn(name="disease_id",columnDefinition="varchar(32) COMMENT '主诊断疾病编码'")
 	@ManyToOne()
 	private Disease disease;
+    /**
+     * 医院编码
+     */
+    @JoinColumn(name="hospital_id",columnDefinition="varchar(32) COMMENT '医院编码'")
+    @ManyToOne()
+    private Hospital hospital;
 	
 	//门诊报销细节表
 	@JoinColumn(name="outp_id",columnDefinition="varchar(32) COMMENT '门诊报销主表Id'")
@@ -65,8 +71,7 @@ public class OutpMaster implements Serializable {
 	private BigDecimal toalCost;
 	
 	// 创建时间
-	@Column(name = "create_time", columnDefinition = "timestamp COMMENT '创建时间'", insertable = false, updatable = false)
-	@Generated(GenerationTime.INSERT)
+	@Column(name = "create_time", columnDefinition = "timestamp COMMENT '创建时间' DEFAULT CURRENT_TIMESTAMP ", insertable = false, updatable = false)
 	@JSONField(format = "yyyy-MM-dd hh:mm:ss")
 	private Timestamp createTime;
 
@@ -119,6 +124,15 @@ public class OutpMaster implements Serializable {
 	public void setCreateTime(Timestamp createTime) {
 		this.createTime = createTime;
 	}
+
+	public Hospital getHospital() {
+		return hospital;
+	}
+
+	public void setHospital(Hospital hospital) {
+		this.hospital = hospital;
+	}
+
 	
 	
 

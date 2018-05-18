@@ -2,12 +2,15 @@ package com.lifeng.insurance.model;
 
 public class Page {
 
-	private int page;
-	private int  pageSize;
-	private int rows;
+	private int page=1;
+	private int  pageSize=1000000;
+	private int rows=10000;
 	private int first;
 	private String order;
 	private String sort;
+	
+
+	
 	public int getPage() {
 		return page;
 	}
@@ -44,5 +47,6 @@ public class Page {
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
+
 	
 }

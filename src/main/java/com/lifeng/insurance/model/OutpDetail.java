@@ -71,7 +71,6 @@ public class OutpDetail implements Serializable {
 	
 	//备注
 	@Column(name="remarks",columnDefinition="varchar(255) COMMENT '备注'")
-	
 	private String remarks;
 
 	public Integer getId() {

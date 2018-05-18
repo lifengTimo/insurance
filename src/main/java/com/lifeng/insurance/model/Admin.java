@@ -41,10 +41,9 @@ public class Admin  implements Serializable{
 	@Column(name="password",columnDefinition="varchar(100) COMMENT '用户密码'")
 	private String password;
 	
-	@Column(name="create_time",columnDefinition="timestamp COMMENT '创建时间'",insertable=false, updatable=false)
-	@Generated(GenerationTime.INSERT)
-	@JSONField(format="yyyy-MM-dd hh:mm:ss")
-	private  Timestamp createTime;
+	@Column(name = "create_time", columnDefinition = "timestamp COMMENT '创建时间' DEFAULT CURRENT_TIMESTAMP ", insertable = false, updatable = false)
+	@JSONField(format = "yyyy-MM-dd hh:mm:ss")
+	private Timestamp createTime;
 	
 	@Column(name="auth",columnDefinition="varchar(100) COMMENT '用户权限'")
 	private String auth;

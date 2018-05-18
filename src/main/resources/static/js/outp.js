@@ -23,6 +23,33 @@ $(function () {
                 },}
         ]]
     });
+
+
+    //医院编码
+    $('input[name="topHospital"]').combogrid({
+        panelWidth:500,
+        url:'/hospital/getAll',
+        idField:'id',
+        textField:'hospitalName',
+        mode:'remote',
+        fitColumns:true,
+        columns:[[
+            {field:'id',title:'编号',align:'center',width:40},
+            {field:'hospitalNo',title:'医院编码',align:'center',width:120},
+            {field:'hospitalName',title:'医院名称',align:'center',width:80},
+            {field:'pinyin',title:'拼音简码',align:'center',width:60},
+            {field:'type',title:'类型',align:'center',width:60,formatter: function(value,row,index){
+                    if (value.type){
+                        return  value.type.valueName;
+                    } else {
+                        return '';
+                    }
+                },},
+            {field:'createTime',title:'创建时间',align:'center',width:60}
+
+        ]]
+    });
+
     $("input[name='idNo']").bind('keypress',function(event){
 
         var idNoText=$("input[name='idNo']").val();
@@ -39,8 +66,9 @@ $(function () {
                 $('#age').html(data.age);
                 $('#id').html(data.id);
             });
-
-
     });
+
+
+
 
 })

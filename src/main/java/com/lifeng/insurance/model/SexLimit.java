@@ -51,11 +51,12 @@ public class SexLimit implements Serializable {
 	 */
 	@Column(name = "prompt_Message",columnDefinition="varchar(1) COMMENT '提示信息 是否限制男女 1 限制男  2 限制女性'")
 	private String promptMessage;
-	
-	@Column(name="create_time",columnDefinition="timestamp COMMENT '创建时间'",insertable=false, updatable=false)
-	@Generated(GenerationTime.INSERT)
-	@JSONField(format="yyyy-MM-dd hh:mm:ss")
-	private  Timestamp createTime;
+	/**
+	 * 创建时间
+	 */
+	@Column(name = "create_time", columnDefinition = "timestamp COMMENT '创建时间' DEFAULT CURRENT_TIMESTAMP ", insertable = false, updatable = false)
+	@JSONField(format = "yyyy-MM-dd hh:mm:ss")
+	private Timestamp createTime;
 
 	/**
 	 * 提示信息  名称

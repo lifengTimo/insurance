@@ -200,3 +200,9 @@
 .icon-good{
 	background:url('icons/okGood.png') no-repeat center center;
 }
+.icon-record{
+	background:url('icons/record.png') no-repeat center center;
+}
+.icon-drugDisease{
+	background:url('icons/drug_disease.png') no-repeat center center;
+}

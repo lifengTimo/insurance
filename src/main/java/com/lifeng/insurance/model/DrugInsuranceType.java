@@ -51,8 +51,7 @@ public class DrugInsuranceType {
 	private PublicDict insuranceType;
 	
 	// 创建时间
-	@Column(name = "create_time", columnDefinition = "timestamp COMMENT '创建时间'", insertable = false, updatable = false)
-	@Generated(GenerationTime.INSERT)
+	@Column(name = "create_time", columnDefinition = "timestamp COMMENT '创建时间' DEFAULT CURRENT_TIMESTAMP ", insertable = false, updatable = false)
 	@JSONField(format = "yyyy-MM-dd hh:mm:ss")
 	private Timestamp createTime;
 

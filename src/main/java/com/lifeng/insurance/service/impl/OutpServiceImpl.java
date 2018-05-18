@@ -13,8 +13,11 @@ import com.lifeng.insurance.dao.DiseaseGenderRepository;
 import com.lifeng.insurance.dao.DiseaseRepository;
 import com.lifeng.insurance.dao.DrugBodyLimitRepository;
 import com.lifeng.insurance.dao.DrugDayRepository;
+import com.lifeng.insurance.dao.DrugHospitalRepository;
 import com.lifeng.insurance.dao.DrugInsuranceTypeRepository;
 import com.lifeng.insurance.dao.DrugRepository;
+import com.lifeng.insurance.dao.HospitalRepository;
+import com.lifeng.insurance.dao.IllegalRecordRepository;
 import com.lifeng.insurance.dao.OutpDetailRepository;
 import com.lifeng.insurance.dao.OutpMasterRepository;
 import com.lifeng.insurance.dao.PatientRepository;
@@ -25,7 +28,10 @@ import com.lifeng.insurance.model.DiseaseGender;
 import com.lifeng.insurance.model.Drug;
 import com.lifeng.insurance.model.DrugBodyLimit;
 import com.lifeng.insurance.model.DrugDay;
+import com.lifeng.insurance.model.DrugHosipital;
 import com.lifeng.insurance.model.DrugInsuranceType;
+import com.lifeng.insurance.model.Hospital;
+import com.lifeng.insurance.model.IllegalRecord;
 import com.lifeng.insurance.model.OutpDetail;
 import com.lifeng.insurance.model.OutpMaster;
 import com.lifeng.insurance.model.Patient;
@@ -109,6 +115,24 @@ public class OutpServiceImpl implements OutpService{
 	@Autowired
 	private DrugInsuranceTypeRepository drugTypeDao;
 	
+	/**
+	 * 药品医院等级Doa
+	 */
+	@Autowired
+	private DrugHospitalRepository drugHospitalDao;
+	
+	/**
+	 * 参保医院Dao
+	 */
+	@Autowired
+	private HospitalRepository hospitalDao;
+	
+	/**
+	 * 违规记录Dao
+	 */
+	@Autowired
+	private IllegalRecordRepository recordDao;
+	
 	@Override
 	public String insertOutp(OutpMaster master) {
 		List<OutpDetail> details=master.getDetails();
@@ -136,6 +160,8 @@ public class OutpServiceImpl implements OutpService{
 		 //查询疾病信息
 		 Disease disease = diseaseDao.findById(master.getDisease().getId()).get();
 		 
+		 //医院信息
+		 Hospital hospital = hospitalDao.getOne(master.getHospital().getId());
 		 
 		 //监控疾病性别信息是否正确
 		 stringBuffer.append(diseaseGenderMonitor(patient, disease));
@@ -159,12 +185,23 @@ public class OutpServiceImpl implements OutpService{
 			 //药品用药天数限制
 			 stringBuffer.append(drugDayMonitor(drug, item.getDay()));
 			 
-			 //药品限制限制
+			 //药品限制险种限制
 			 //获取药品险种限制信息
 			 PublicDict type = dictDao.getOne(item.getReimburseType().getId());
 			 stringBuffer.append(drugInsuranceTypeMonitor(drug, type));
+			 
+			 //药品医院等级限制
+			 stringBuffer.append(drugHospitalTypeMonitor(drug, hospital));
 		 }
-		
+		 
+		//保存违规记录
+		 if(stringBuffer.length()>=1||stringBuffer.equals("")) {
+			 IllegalRecord record=new IllegalRecord();
+			 record.setOutp(master);
+			 record.setRecord(stringBuffer.toString());
+			 recordDao.save(record);
+		 }
+		 
 		return stringBuffer.toString();
 	}
 	/**
@@ -194,7 +231,7 @@ public class OutpServiceImpl implements OutpService{
 		if(patientSex.equals(diseaseSex)) {
 			return "";
 		}
-		return "本次交易有疾病方面问题："+disease.getDiseaseCode()+" "+disease.getDiseaseName()+"性别限制为"+diseaseSex+"性\n";
+		return "   本次交易有疾病方面问题："+disease.getDiseaseCode()+" "+disease.getDiseaseName()+"性别限制为"+diseaseSex+"性";
 	}
 	/**
 	 * 
@@ -223,7 +260,7 @@ public class OutpServiceImpl implements OutpService{
 		if(patientSex.equals(drugSex)) {
 			return "";
 		}
-		return "\n本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 性别限制为"+drugSex+"性\n";
+		return "   本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 性别限制为"+drugSex+"性<br>";
 	}
 	/**
 	 * 
@@ -265,7 +302,7 @@ public class OutpServiceImpl implements OutpService{
 		if(ageName.equals(drugAge.getValueName())) {
 			return "";
 		}
-		return "\n次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 年龄应该限制为"+drugAge.getValueName()+"\n";
+		return "  本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 年龄应该限制为"+drugAge.getValueName()+"<br>";
 	}
 	/**
 	 * 
@@ -312,7 +349,7 @@ public class OutpServiceImpl implements OutpService{
 			return "";
 		}
 		
-		return "\n次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 用药天数应该限制在"+day+"天\n";
+		return "   本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 用药天数应该限制在"+day+"天<br>";
 		
 		
 	}
@@ -341,7 +378,38 @@ public class OutpServiceImpl implements OutpService{
 		if(orderType.equals(drugType)) {
 			return "";
 		}
-		return "\n次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 医保险种应该限制在"+drugType+" 类型\n";
+		return " 本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 医保险种应该限制在"+drugType+" 类型<br>";
 	}
-	
+	/**
+	 * 
+	* @Title: drugHospitalTypeMonitor 
+	* @Description: TODO(药品医院等级限制监控) 
+	* @param @param drug 报销药品
+	* @param @param hospital 报销医院
+	* @param @return  参数说明 
+	* @return String    返回类型 
+	* @throws
+	 */
+	public String drugHospitalTypeMonitor(Drug drug,Hospital hospital) {
+		DrugHosipital example=new DrugHosipital();
+		example.setDrug(drug);
+		Optional<DrugHosipital> option = drugHospitalDao.findOne(Example.of(example));
+		//判断是否为空
+		if(!option.isPresent()) {
+			return "";
+		}
+		//获取药品医院等级限制
+		DrugHosipital drugHospital = option.get();
+		String drugHospitalType=drugHospital.getHospitalGrade().getValueName();
+		
+		//获取报销医院的等级
+		hospital=hospitalDao.getOne(hospital.getId());
+		String hospitalType=hospital.getType().getValueName();
+		
+		if(drugHospitalType.equals(hospitalType)) {
+			return "";
+		}
+		
+		return " 本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 应该限制医院在"+drugHospitalType+" 医院<br>"+",此家医院不符合条件";
+	}
 }

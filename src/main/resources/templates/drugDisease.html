@@ -1,0 +1,30 @@
+<table id="drugDrugDiseaseTable">
+</table>
+<div id="drugDrugDisease_tool" style="padding: 5px;">
+    <div style="margin-bottom: 5px;">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="drugDrugDisease_tool.add();">添加</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-delete" plain="true" onclick="drugDrugDisease_tool.remove();">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-modify" plain="true" onclick="drugDrugDisease_tool.edit()">修改</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="drugDrugDisease_tool.reload()">刷新</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="drugDrugDisease_tool.redo()">取消选择</a>
+    </div>
+</div>
+<form id="drugDrugDisease_add" style="margin: 0;padding: 5px 0 0 25px;color: #333;">
+    <p>药品编码：<input id="DrugDiseaseLimitDrugCode" type="text" name="drugCode" class="textbox" style="width: 200px;"></p>
+    <p>疾病限制：<input  id="diseaseLimitInput" class="text" name="disease" style="width: 205px;"></p>
+    <!--<p>疾病限制： <select  id="DrugDiseaseLimitInput">
+        <option value="1"> 限制男性</option>
+        <option value="2"> 限制女性</option>
+    </select></p>-->
+</form>
+<form id="drugDrugDisease_edit" style="margin: 0;padding: 5px 0 0 25px;color: #333;">
+    <input type="hidden" id="id" name="id" class="textbox" style="width: 200px;">
+    <input type="hidden" id="drugId" name="drugId" class="textbox" style="width: 200px;">
+    <p>药品编码：<input id="DrugDiseaseLimitDrugCodeEdit" type="text" name="drugCode" class="textbox" style="width: 200px;" disabled="disabled"></p>
+    <p>疾病限制：<input  id="DrugDiseaseLimitInputEdit" class="text" name="disease" style="width: 205px;"></p>
+   <!-- <p>性别限制： <select  id="DrugDiseaseLimitInputEdit" name="DrugDiseaseLimit">
+        <option value="1"> 限制男性</option>
+        <option value="2"> 限制女性</option>
+    </select></p>-->
+</form>
+<script type="type/javascript" src="/js/drugDisease.js"></script>

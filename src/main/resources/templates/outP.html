@@ -52,6 +52,7 @@
             <li>性别：<label id="sex"/> </li>
             <li>年龄：<label id="age"/> </li>
             <li>主要诊断：<input type="text" class="textbox" style="width: 200px;" name="topDisease"></li>
+            <li>医院名称：<input type="text" class="textbox" style="width: 200px;" name="topHospital"></li>
         </ul>
 
     </div>
@@ -294,9 +295,13 @@
         var disease={
             id:$("input[name='topDisease']").val(),
         };
+        var hospital={
+            id:$("input[name='topHospital']").val(),
+        }
         var json={
             patient:person,
             disease:disease,
+            hospital:hospital,
             details:details,
         };
         $.ajax({
@@ -318,7 +323,12 @@
                     result='提交成功';
                 }
                 console.log(result);
-                $.messager.alert('提示信息',result);
+                $.messager.confirm({
+                    width: 380,
+                    height: 'auto',
+                    title: '操作确认',
+                    msg:result,
+                });
                 /*
                 if(data>0){
                     $.messager.show({

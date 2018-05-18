@@ -1,0 +1,126 @@
+<style>
+    table.view {border:1px solid #A8CFEB;border-collapse: collapse;margin-bottom:5px;}
+    .view th{ padding-left:10px;padding-right:5px;padding-top:5px;padding-bottom:5px;height:23px;width: 150px;border: 1px solid silver;background-color:#F1F6FF;}
+    .view td{ padding-left:10px;padding-right:5px;padding-top:5px;padding-bottom:5px;height:23px;width: 150px;border: 1px solid silver;background-color:#FAFCFF;}
+</style>
+<div class="easyui-layout" id="tb" style="padding:5px;height:auto">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset>
+        <legend>信息查询</legend>
+        <form id="ffSearch" method="post">
+            <div style="margin-bottom:5px">
+                <label for="txtHospital">经办机构医院：</label>
+                <input class="textbox" type="text" ID="txtHospital" name="txtHospital" style="width:200px"  />&nbsp;&nbsp;&nbsp;
+
+                <label for="personName">参保人名称：</label>
+                <input type="text" ID="personName" name="personName" style="width:100px"  />&nbsp;&nbsp;&nbsp;
+
+                <label for="txtFullName">社保卡号：</label>
+                <input type="number" ID="txtFullName" name="txtFullName" style="width:150px"  />&nbsp;&nbsp;&nbsp;
+
+                <label for="startTime">开始时间：</label>
+                <input class="easyui-datebox" type="text" ID="startTime" name="startTime" style="width:100px"  />&nbsp;&nbsp;&nbsp;
+
+                <label for="endTime">结束时间：</label>
+                <input class="easyui-datebox" type="text" ID="endTime" name="endTime" style="width:100px"  />&nbsp;&nbsp;&nbsp;
+
+                <a href="#" class="easyui-linkbutton" iconcls="icon-search" id="btnSearch">查询</a>
+            </div>
+        </form>
+    </fieldset>
+
+    <!-------------------------------详细信息展示表格----------------------------------->
+    <div style="clear: both;height: 10px;"></div>
+    <table  id="recordTable" class="easyui-datagrid" title="门诊处方" style="width:auto;height:700px"
+            data-options="
+				iconCls: 'icon-prescription',
+				singleSelect: true,
+				url: '/record/getAll',
+				method: 'get',
+				 pagination:true
+			" >
+        <thead>
+            <tr>
+                <th field="id" width="100"  data-options=" width:400,align:'left' , halign: 'center'">编号</th>
+                <th field="hospitalName" width="250" data-options=" width:400,align:'left' , halign: 'center'" >医院名称</th>
+                <th field="name" width="100" data-options=" width:400,align:'left' , halign: 'center'">参保人名称</th>
+                <th field="idCard" width="250"  data-options=" width:400,align:'left' , halign: 'center'">社保卡号</th>
+                <th field="record" width="650" data-options=" width:400,align:'left' , halign: 'center'">违规记录</th>
+                <th field="createTime" width="150" data-options=" width:400,align:'left' , halign: 'center'">创建时间</th>
+            </tr>
+
+        </thead>
+    </table>
+</div>
+<!--------------------------查看详细信息的弹出层---------------------------->
+<div id="DivView" class="easyui-dialog" style="width:580px;height:auto;padding:10px 20px" title="详细信息"
+     closed="true" resizable="true" modal="true" data-options="iconCls: 'icon-view',buttons: '#dlg-buttons'" hidden="hidden">
+    <form id="ffView" method="post" novalidate="novalidate">
+        <table id="tblView" class="view">
+            <tr>
+                <th>
+                    <label for="idCard">参保人社保卡号：</label></th>
+                <td>
+                    <label id="idCard" name="idCard"/>
+                </td>
+                <th>
+                    <label for="name">参保人姓名：</label></th>
+                <td>
+                    <label id="name" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="sex">参保人性别：</label></th>
+                <td>
+                    <label id="sex" />
+                </td>
+                <th>
+                    <label for="hospitalNo">医院编号：</label></th>
+                <td>
+                    <label id="hospitalNo" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="hospitalName">医院名称：</label></th>
+                <td>
+                    <label id="hospitalName" />
+                </td>
+                <th>
+                    <label for="diseaseName">疾病名称：</label></th>
+                <td>
+                    <label id="diseaseName" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="money">报销费用：</label></th>
+                <td>
+                    <label  id="money" />
+                </td>
+                <th>
+                    <label for="createTime">提交时间：</label></th>
+                <td>
+                    <label id="createTime" />
+                </td>
+
+            </tr>
+            <tr>
+                <th>
+                    <label for="record">违规记录：</label></th>
+                <td colspan="4">
+                    <label id="record" />
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4" style="text-align:right; padding-top:10px">
+                    <input type="hidden" id="ID2" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#DivView').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="type/javascript" src="/js/record.js"></script>
