@@ -13,6 +13,7 @@ import com.lifeng.insurance.dao.DiseaseGenderRepository;
 import com.lifeng.insurance.dao.DiseaseRepository;
 import com.lifeng.insurance.dao.DrugBodyLimitRepository;
 import com.lifeng.insurance.dao.DrugDayRepository;
+import com.lifeng.insurance.dao.DrugDiseaseRepository;
 import com.lifeng.insurance.dao.DrugHospitalRepository;
 import com.lifeng.insurance.dao.DrugInsuranceTypeRepository;
 import com.lifeng.insurance.dao.DrugRepository;
@@ -28,6 +29,7 @@ import com.lifeng.insurance.model.DiseaseGender;
 import com.lifeng.insurance.model.Drug;
 import com.lifeng.insurance.model.DrugBodyLimit;
 import com.lifeng.insurance.model.DrugDay;
+import com.lifeng.insurance.model.DrugDisease;
 import com.lifeng.insurance.model.DrugHosipital;
 import com.lifeng.insurance.model.DrugInsuranceType;
 import com.lifeng.insurance.model.Hospital;
@@ -133,6 +135,12 @@ public class OutpServiceImpl implements OutpService{
 	@Autowired
 	private IllegalRecordRepository recordDao;
 	
+	/**
+	 * 药品疾病限制Dao
+	 */
+	@Autowired
+	private DrugDiseaseRepository drugDiseaseDao;
+	
 	@Override
 	public String insertOutp(OutpMaster master) {
 		List<OutpDetail> details=master.getDetails();
@@ -192,6 +200,8 @@ public class OutpServiceImpl implements OutpService{
 			 
 			 //药品医院等级限制
 			 stringBuffer.append(drugHospitalTypeMonitor(drug, hospital));
+			 //药品疾病规则限制
+			 stringBuffer.append(drugDiseaseMonitor(drug,disease));
 		 }
 		 
 		//保存违规记录
@@ -410,6 +420,31 @@ public class OutpServiceImpl implements OutpService{
 			return "";
 		}
 		
-		return " 本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 应该限制医院在"+drugHospitalType+" 医院<br>"+",此家医院不符合条件";
+		return " 本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 应该限制医院在"+drugHospitalType+",此家医院不符合条件<br>";
+	}
+	/**
+	 * 
+	* @Title: drugDiseaseMonitor 
+	* @Description: TODO(药品疾病限制规则) 
+	* @param @param drug 药品
+	* @param @param disease 疾病
+	* @param @return  参数说明 
+	* @return String    返回类型 
+	* @throws
+	 */
+	private String drugDiseaseMonitor(Drug drug,Disease disease) {
+		DrugDisease ex=new DrugDisease();
+		ex.setDrug(drug);
+		Optional<DrugDisease> option = drugDiseaseDao.findOne(Example.of(ex));
+		if(!option.isPresent()) {
+			return "";
+		}
+		//获取药品本身限制的疾病
+		Drug drugDisease = option.get().getDrug();
+		//对比患者的疾病和药品本身限制的疾病
+		if(drugDisease.getId().equals(disease.getId())) {
+			return "";
+		}
+		return " 本次交易有药品问题： "+drug.getDrugCode()+drug.getDrugName()+" 应该限制的疾病是:"+drugDisease.getDrugName()+"<br>";
 	}
 }
