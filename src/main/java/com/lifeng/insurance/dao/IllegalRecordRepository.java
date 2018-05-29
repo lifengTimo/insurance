@@ -24,7 +24,8 @@ public interface IllegalRecordRepository extends JpaRepository<IllegalRecord,Int
 			"	u.id AS  id,\r\n" + 
 			"	u.createtime AS createTime,\r\n" + 
 			"	u2.name as name,\r\n" + 
-			"  u3.hosital_name hospitalName,\r\n" + 
+			"  u3.hospital_name hospitalName,\r\n" + 
+			" u2.id_no as idCard, "+
 			"	u.record AS record\r\n" + 
 			"FROM\r\n" + 
 			"	insurance_illegal_record u\r\n" + 
@@ -38,7 +39,7 @@ public interface IllegalRecordRepository extends JpaRepository<IllegalRecord,Int
 			"	)\r\n" + 
 			"AND (u2. NAME LIKE %?4%)\r\n" + 
 			"AND (u2.id_no LIKE %?5%)\r\n" + 
-			"AND (u3.hosital_no LIKE %?3%)",nativeQuery=true)
+			"AND (u3.hospital_no LIKE %?3%)",nativeQuery=true)
 	Page<IllegalRecordReturn> getAllByI(String startTime, String endTime,String hospitalId, String name, String idCard, Pageable pageable);
 	@Query(value="SELECT\r\n" + 
 			"	u.id AS  id,\r\n" + 

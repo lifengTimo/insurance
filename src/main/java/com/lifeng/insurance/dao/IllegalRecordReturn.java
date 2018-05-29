@@ -13,6 +13,7 @@ public interface IllegalRecordReturn {
 	
 	String getId();
 	String getName();
+	String getIdCard();
 	String getHospitalName();
 	String getRecord();
 	Date getCreateTime();
